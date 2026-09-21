@@ -1,6 +1,6 @@
 // Shared by the offline renderer and browser report. No CRM or network access.
 export const STAGES = ['Fresh Rebuild', 'Stale After Rebuild', 'Actively Iterating', 'Expanding', 'Streamlining', 'Long Quiet Stretch', 'Gone Quiet', 'No Strong Signal', 'Insufficient History', 'Unknown'];
-export const COLORS = ['#7045ff', '#132440', '#5f7e6c', '#8765d8', '#456776', '#9b8171', '#747b86', '#a69f91', '#c0b8a9', '#827b8e'];
+export const COLORS = ['#7045ff', '#63508e', '#5f7e6c', '#9270d5', '#478a80', '#a184bd', '#628d73', '#b49bd6', '#92b69f', '#7d6ca8', '#acbfa9', '#c4b1de'];
 const text = value => value == null ? '' : String(value);
 function date(value, label, optional = false) {
   if (optional && !value) return '';
@@ -41,7 +41,7 @@ export function normalizeReport(input) {
   return {mode: input.mode, title: text(input.title || 'Website history'), cohort: text(input.cohort || 'Selected records'), generated_at: generatedAt, count_unit: unit, demo: input.demo === true, rows};
 }
 export function summarize(report) {
-  const counts = [...STAGES, 'Unresolved', 'Missing input'].map((stage, i) => ({stage, count: report.rows.filter(r => r.stage === stage).length, color: COLORS[i] || '#b9b2a4'})).filter(x => x.count);
+  const counts = [...STAGES, 'Unresolved', 'Missing input'].map((stage, i) => ({stage, count: report.rows.filter(r => r.stage === stage).length, color: COLORS[i] || '#acbfa9'})).filter(x => x.count);
   const analyzed = report.rows.filter(r => r.resolution === 'analyzed').length;
   const informative = report.rows.filter(r => r.resolution === 'analyzed' && !['Insufficient History', 'No Strong Signal', 'Unknown'].includes(r.stage)).length;
   return {total: report.rows.length, analyzed, informative, unresolved: report.rows.length - analyzed, counts};

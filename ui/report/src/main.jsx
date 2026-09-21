@@ -7,20 +7,30 @@ const report = JSON.parse(document.getElementById('report-data').textContent);
 const stats = summarize(report);
 const customer = report.mode === 'customers';
 const dateLabel = value => value ? new Date(`${value}T12:00:00Z`).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}) : 'Date unavailable';
-const color = stage => COLORS[STAGES.indexOf(stage)] || '#9b9486';
+const color = stage => COLORS[[...STAGES,'Unresolved','Missing input'].indexOf(stage)] || '#acbfa9';
 function saveCsv() {
   const url = URL.createObjectURL(new Blob(['\ufeff',toCsv(report)],{type:'text/csv;charset=utf-8'}));
   const a = document.createElement('a'); a.href=url; a.download=`website-history-${report.mode}-${report.generated_at}.csv`; a.click();
   setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function Badge({stage}) {return <span className="badge" style={{'--stage-color':color(stage)}}><i/>{stage}</span>}
+function EvidencePoints({row}) {
+  const source=row.error || row.evidence_summary || 'No supporting summary was supplied.';
+  const summary=source.startsWith(row.stage+'. ') ? source.slice(row.stage.length+2) : source;
+  const points=summary.split(/(?<=[.!?])\s+(?=[A-Z])|[\r\n]+|;\s+(?=[A-Z])/u).map(s=>s.trim()).filter(Boolean);
+  return <><p className="evidence-stage"><strong>{row.resolution==='analyzed' ? 'Website stage' : 'Result'}:</strong> {row.stage}</p><ul className="evidence-points">{points.map((point,index)=>{
+    const label=point.match(/^([^:]{1,65}):\s*(.+)$/);
+    const finding=!label && point.match(/^((?:Major Rebuild Signal|Sustained Site Expansion|Heavy Iteration|Possible Streamlining))\s+(.+)$/);
+    return <li key={index}>{label ? <><strong>{label[1]}:</strong> {label[2]}</> : finding ? <><strong>{finding[1]}</strong> {finding[2]}</> : point}</li>;
+  })}</ul></>;
+}
 function Company({row,index}) {
   return <details className="company-card"><summary>
     <span className="row-num">{String(index+1).padStart(2,'0')}</span>
     <span className="company"><strong>{row.company}</strong><span>{row.domain || 'Domain missing'}</span></span>
     <span className="row-date"><small>{customer ? 'Closed' : 'As of'}</small>{dateLabel(row.date)}</span>
     <Badge stage={row.stage}/><span className="expand" aria-hidden="true">+</span>
-  </summary><div className="evidence"><div><span className="eyebrow">{row.resolution === 'analyzed' ? 'What the archive tells us' : 'Needs a closer look'}</span><p>{row.error || row.evidence_summary || 'No supporting summary was supplied.'}</p>
+  </summary><div className="evidence"><div><span className="eyebrow">{row.resolution === 'analyzed' ? 'What the archive tells us' : 'Needs a closer look'}</span><EvidencePoints row={row}/>
     {row.archive_url && <a href={row.archive_url} target="_blank" rel="noopener noreferrer">Explore the archive <span aria-hidden="true">↗</span></a>}
   </div><dl><div><dt>Archive retrieval</dt><dd>{row.archive_coverage}</dd></div><div><dt>Signal window</dt><dd>{row.signal_start || '—'}{row.signal_end && ` → ${row.signal_end}`}</dd></div><div><dt>Record reference</dt><dd>{row.input_id}</dd></div></dl></div></details>;
 }
