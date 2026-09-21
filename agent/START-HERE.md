@@ -1,25 +1,24 @@
-# Set this up with Claude or ChatGPT
+# Analyze customers or leads with your AI assistant
 
-Use your assistant as a guide to the files, setup, and customization. The analysis itself runs in Node.js or through the supplied service. Uploading a ZIP into a chat does not by itself install a CRM integration or grant account access.
+[Download the Website History skill](../downloads/website-history-skill.zip) · [Read its instructions](../skills/website-history/SKILL.md)
 
-## If you are starting in a normal chat
+The download includes the analysis engine, so you do not need a separate service just to run this with a capable desktop assistant. If your assistant supports importing skills, use the ZIP. Otherwise extract or attach it in a conversation and ask the assistant to follow `website-history/SKILL.md`. Attaching files does not itself install tools or connect a CRM.
 
-Attach the starter ZIP if your chat supports ZIPs. Otherwise attach `README.md`, `QUICKSTART.md`, the guide for your destination, and `examples/example-output.json`. Ask the assistant to explain the result and walk you through the appropriate setup. Share the relevant workflow JSON when you want help editing it.
+Choose one path:
+
+| Path | What you learn | What you provide |
+|---|---|---|
+| **Customers** | The website stage as of each customer’s close date, plus patterns across customers | A CSV or CRM connection with domains and actual close dates |
+| **Leads** | Each company’s current website stage and supporting evidence | A CSV or CRM connection with company domains |
 
 Use this prompt:
 
-> I want to use this Website History Signals Starter with [Attio / Apollo / Clay / my CRM]. I am [comfortable / not comfortable] with code. First read the README and destination guide, explain what I will get, and tell me which account details I need. Start with the offline example. Help me connect only the website-activity field, using a multi-select dropdown wherever supported; for Attio, include the formatted company note. Keep the default six-month Fresh Rebuild rule. Use the supplied evidence and do not invent website changes. Tell me whether you can actually execute code and access my tools, or whether I need to run the steps. Keep API keys in environment variables or n8n credentials, not chat messages. Show the preview before enabling writes.
+> Use the Website History skill to analyze my [customers / leads]. My data is [in the attached CSV / in my connected CRM]. Ask me what you need to identify the right records and fields, then produce a report. Before uploading anything or changing CRM data, confirm the destination, matching rules, fields and options, and note handling with me. Show the exact proposed changes and wait for my approval.
 
-## If your assistant can work in a local folder
+Your assistant can inspect headers or CRM field definitions to make those questions concrete. For Customers, it will also clarify which actual close date to use and how to handle multiple deals for one company. For Leads, it will clarify the list or filter and the analysis date.
 
-Open the extracted folder, then use:
+**You get a report first.** CRM writeback is optional. The skill prefers multi-select stage fields where supported, keeps historical customer results separate from current stages, and skips unresolved records. It never treats a CSV or connection as permission to upload data.
 
-> Read README.md, QUICKSTART.md, and agent/editing-guide.md. Run the offline demo and tests if you have a terminal. Help me configure [destination] using the one-field path. Preserve the provided Attio note formatter when relevant. Report what you actually tested. Use my connected tools only within the access and actions I authorize.
+The assistant needs file access, Node.js 22+, and internet access to run the bundled engine. A CRM connector alone is not enough. If those capabilities are unavailable, it can prepare the input and explain what remains unrun, but it must not claim to have analyzed the websites.
 
-The optional instruction file [website-history-signal.md](website-history-signal.md) gives a coding assistant the output contract and boundaries. It is plain project context, not an automatically installed Claude Skill, MCP server, or ChatGPT action.
-
-## Ask for a useful adaptation
-
-> Adapt the generic n8n workflow to update our [CRM] company field [field name/API ID]. We identify companies by [domain/record ID]. Keep preview mode, coverage checks, and one-company-at-a-time processing. Use the CRM’s official API documentation and explain anything I must configure in my account.
-
-Do not paste your full private enrichment workflow or customer data into a public repository. The starter contains only the reusable website-history portion and synthetic examples.
+For technical customization of the starter, see [the editing guide](editing-guide.md).

@@ -44,9 +44,11 @@ You need an existing company in Attio, one custom company field, and an Attio AP
 
 Create one custom multi-select field named **Website activity state** wherever the destination supports it; use text only as a compatibility fallback. Apollo requires picklist option IDs as well as the field ID. Use the [Apollo workflow](docs/apollo.md), [Clay HTTP/CSV guide](docs/clay.md), or [generic field workflow](docs/generic.md). Add optional evidence fields later.
 
-## 5. I want Claude or ChatGPT to help me set it up
+## 5. I want my AI assistant to analyze customers or leads
 
-Use [agent/START-HERE.md](agent/START-HERE.md). It includes a copyable prompt and tells you which files to share. A normal chat can explain or adapt the package; executing it requires a tool-enabled environment or running the commands yourself.
+[Download the skill](downloads/website-history-skill.zip), then follow [the short two-path guide](agent/START-HERE.md). Customers uses actual close dates; Leads uses the current analysis date. Both accept a CSV attached to the conversation or a connected CRM. The assistant produces a report and asks about CRM details before proposing an upload or update. It waits for approval of that preview before writing anything.
+
+The ZIP includes the engine. A capable desktop assistant can run it locally without service hosting; it still needs Node.js 22+ and internet access.
 
 ## Start the analysis service for automation
 

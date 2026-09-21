@@ -1,3 +1,11 @@
+## Customers & Leads skill export verification
+
+- Skill metadata validation passed.
+- The standalone ZIP passed all 35 engine tests and the offline demo after extraction.
+- All local Markdown links in the exported ZIP resolve; repeated exports are byte-identical.
+- The export excludes local credentials and repository metadata.
+- CRM clarification, historical/current separation, and explicit preview confirmation are specified in the skill instructions. Model adherence, platform installation, and live CRM writes were not exercised.
+
 ## Multi-select update verification
 
 - 35 tests passed on Node.js 22 and 26, including replacement of prior Attio selections, custom attribute mapping, Apollo option-ID mapping, missing-option rejection, and workflow defaults.
