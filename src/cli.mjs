@@ -37,9 +37,10 @@ const help = `Website History Signals (Node 22+)
 Defaults: sync is a dry run; no CRM requests without --apply. analyze reads only the public archive.
 Optional analyze flags: --as-of YYYY-MM-DD, --max-pages 1..50 (default ${DEFAULTS.maxPages}),
   --page-size 100..15000 rows per archive request (default ${DEFAULTS.pageSize}),
-  --timeout seconds for the whole archive read (default ${DEFAULTS.timeoutMs / 1000}), --quiet.
+  --timeout seconds for the whole archive read (default ${DEFAULTS.timeoutMs / 1000}),
+  --request-timeout seconds per archive request (default ${DEFAULTS.requestTimeoutMs / 1000}), --quiet.
 Clay: SIGNALS_API_TOKEN=<long-random-token> npm start
-Behind an HTTP proxy, run with NODE_USE_ENV_PROXY=1 so Node's fetch honours HTTPS_PROXY.
+Behind an HTTP proxy, use Node 22.21+ or 24+ with NODE_USE_ENV_PROXY=1 so fetch honours HTTPS_PROXY.
 `;
 try {
   const { values: v, positionals: p } = parseArgs({
@@ -58,6 +59,7 @@ try {
       "max-pages": { type: "string" },
       "page-size": { type: "string" },
       timeout: { type: "string" },
+      "request-timeout": { type: "string" },
       quiet: { type: "boolean" },
     },
   });
@@ -81,6 +83,7 @@ try {
         maxPages: integer(v["max-pages"], "max-pages", 1, 50),
         pageSize: integer(v["page-size"], "page-size", 100, 15000),
         timeoutMs: seconds && seconds * 1000,
+        requestTimeoutMs: v["request-timeout"] === undefined ? undefined : integer(v["request-timeout"], "request-timeout", 1, 3600) * 1000,
         onProgress: v.quiet
           ? undefined
           : ({ query, page, rows, complete }) =>

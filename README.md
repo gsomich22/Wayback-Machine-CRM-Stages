@@ -85,7 +85,7 @@ The workflows call the included analysis service. **n8n Cloud and Clay need a re
 
 The assistant asks about the relevant records and fields, runs the included engine where code execution and internet access are available, and returns a report. If you want results in your CRM, it first resolves the workspace, record matching, field/options, and note handling, then shows the proposed changes and waits for your approval. Historical customer results stay separate from current website states.
 
-Both paths include a **gtmgrace.com-branded HTML report** in the cream, navy, violet, and sage palette: stage mix, searchable company results, expandable evidence, CSV export, and a website signature. The exported file works offline; no hosting or frontend setup is needed. [Leads example](examples/report-leads.html) · [Customers example](examples/report-customers.html) (synthetic data; download and open in a browser).
+Both paths include a **gtmgrace.com-branded HTML report** in the cream, navy, violet, and sage palette: stage mix, searchable company results, expandable evidence, CSV export, and a website signature. The exported file works offline; no hosting or frontend setup is needed. A separate CSV is included; in-chat export controls offer a copyable assistant request when browser actions are blocked. [Leads example](examples/report-leads.html) · [Customers example](examples/report-customers.html) (synthetic data; download and open in a browser).
 
 [Two-path guide and starter prompt](agent/START-HERE.md)
 

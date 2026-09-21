@@ -1,3 +1,10 @@
+## AI sandbox follow-up verification
+
+- 44 tests pass, including skill launcher proxy/runtime handling, default and overridden budgets, slower/stalled archive requests, and separate CSV generation.
+- The skill launcher completes the offline fixture; invalid request timeout values fail before a network call.
+- Browser checks verify direct CSV download, the standalone print action, canonical www signature links, and restricted iframe export help. A sandbox denying clipboard access still exposes a selectable request; no sandbox print or download is attempted. Search and mobile width checks pass.
+- These checks reproduce browser restrictions locally, not inside the user’s actual Claude session. The supplied run log suggests proxy configuration contributed to the retry, but it does not expose the original error; no live archive rerun was performed.
+
 ## Branded HTML report verification
 
 - 40 tests pass, including customer cutoff selection, unresolved-row totals, input validation, HTML/script escaping, archive-link validation, and CSV formula protection. The extracted skill also passes all 40 tests.
