@@ -1,4 +1,4 @@
-# Analyze customers or leads with your AI assistant
+# Use the Website History skill in Claude, ChatGPT, or desktop AI
 
 [Download the Website History skill](../downloads/website-history-skill.zip) · [Read its instructions](../skills/website-history/SKILL.md)
 

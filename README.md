@@ -6,19 +6,46 @@ Give it a domain. Get a website-activity stage, dated evidence, and a readable s
 
 For **Attio**, the starter writes the stage to a **Multi-select** dropdown and creates a formatted company note. For **Apollo, Clay, or another CRM**, start with one custom field: **Website activity state**, using multi-select wherever supported. Apollo’s writer maps stage names to your picklist option IDs; text is a legacy fallback.
 
-You do not need to understand the code to understand the output. You will need someone comfortable connecting a workflow or running a small service to automate it.
+Choose the **Website History skill** for guided research in Claude, ChatGPT, or a desktop AI assistant. Choose a CRM workflow for ongoing automation. You can preview the results before connecting any accounts.
 
 ## What you get
 
 | Path | Result | Start here |
 |---|---|---|
+| Claude / ChatGPT / desktop AI | **Website History skill** — customer or lead research, a branded report, and optional reviewed CRM updates | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
 | Attio | One website-activity field + a company note with an activity bar, dated findings, and an archive link | [Attio setup](docs/attio.md) |
 | Apollo | One custom account field; ready-to-import n8n workflow or local command | [Apollo setup](docs/apollo.md) |
 | Clay / another CRM | A field value you can map into your table or CRM, through HTTP, n8n, or CSV | [Portable field setup](docs/generic.md) |
-| Claude / ChatGPT / desktop AI | Downloadable skill: Customers at close or Leads today, from a CSV or connected CRM | [Download skill](downloads/website-history-skill.zip) · [Start here](agent/START-HERE.md) |
 | Local preview | Sample JSON, CSV, and the Attio note, with no account connection | [Quickstart](QUICKSTART.md) |
 
 The starter’s original source code is free and MIT-licensed. The optional report interface includes React Bits under its bundled third-party license. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
+
+## Claude / ChatGPT: use the Website History skill
+
+**[Download the skill ZIP](downloads/website-history-skill.zip)**
+
+Give the skill to your assistant, then choose what to research:
+
+| Path | What it does | What you provide |
+|---|---|---|
+| **Customers** | Finds the website stage at each customer’s actual close date | A CSV or connected CRM with company domains and actual close dates |
+| **Leads** | Finds each company’s current website stage | A CSV or connected CRM with company domains |
+
+1. Import the ZIP if your assistant supports skills. Otherwise, attach or extract it and ask the assistant to follow `website-history/SKILL.md`.
+2. Attach your CSV in the same conversation, or tell the assistant which connected CRM and list to use.
+3. Ask it to run the skill. It will clarify the relevant records and fields, then return your results.
+
+A simple starting prompt:
+
+> Use the Website History skill to analyze my [customers / leads] from [this CSV / my connected CRM]. Ask me about any missing details, then create the HTML report and CSV. Show me the proposed changes before writing anything to my CRM, and wait for my approval.
+
+**You get a branded HTML report and a separate CSV download.** The report includes stage counts, searchable company results, and expandable evidence. Download and open the HTML in a browser; it works offline. In-chat export buttons provide a copyable request if the preview blocks printing or downloads.
+
+**CRM updates are optional.** Before writing, the skill asks about the workspace, matching records, fields/options, and company notes, then shows a preview for approval. Customer-at-close results stay separate from current website stages.
+
+The download includes the analysis engine and report template. Your assistant needs file access, Node.js execution, and internet access for research; attaching the ZIP alone does not grant those capabilities or connect a CRM. [Skill setup and starter prompt](agent/START-HERE.md)
+
+[Preview a Leads report](examples/report-leads.html) · [Preview a Customers report](examples/report-customers.html) — synthetic examples; download and open in a browser.
 
 ## What it looks like
 
@@ -78,16 +105,6 @@ The `analysis` folder will contain the portable signal, full analysis, formatted
 Import a workflow from [workflows/n8n](workflows/n8n), connect your own credentials, and run it with `apply_changes` set to `false` first. Attio and Apollo writes are enabled when you change that setting to `true`. The generic workflow stops at portable field output, ready for your own destination node.
 
 The workflows call the included analysis service. **n8n Cloud and Clay need a reachable service URL; importing a workflow does not host the engine.** A local command is the fastest path if you do not want hosting. The [quickstart](QUICKSTART.md) separates local use from automation setup.
-
-## Use it with your AI assistant
-
-[Download the Customers & Leads skill](downloads/website-history-skill.zip). Give your assistant the skill and choose **Customers** (website stages at close) or **Leads** (current stages). Attach a CSV directly to that conversation, or use a connected CRM. There is no separate upload site.
-
-The assistant asks about the relevant records and fields, runs the included engine where code execution and internet access are available, and returns a report. If you want results in your CRM, it first resolves the workspace, record matching, field/options, and note handling, then shows the proposed changes and waits for your approval. Historical customer results stay separate from current website states.
-
-Both paths include a **gtmgrace.com-branded HTML report** in the cream, navy, violet, and sage palette: stage mix, searchable company results, expandable evidence, CSV export, and a website signature. The exported file works offline; no hosting or frontend setup is needed. A separate CSV is included; in-chat export controls offer a copyable assistant request when browser actions are blocked. [Leads example](examples/report-leads.html) · [Customers example](examples/report-customers.html) (synthetic data; download and open in a browser).
-
-[Two-path guide and starter prompt](agent/START-HERE.md)
 
 ## Put the stages to work
 
