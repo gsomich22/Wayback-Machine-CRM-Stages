@@ -1,19 +1,21 @@
-[northline.example](https://northline.example) · **Fresh Rebuild**
+[northline.example](https://company.example) · **Major Rebuild Signal**
 
  
 
- 
 
-### ⧗ Wayback Machine ⧗
 
-### 2026
-▅▅▅█▅▅
+⧗ Wayback Machine ⧗
+2021   2022   2023   2024   2025    2026
+▅▅▅▅▅▆▆▅▆█▆▅▅▆▅▆▆▅▆▆▆▅▅▅█▅▅▅▅▆▅▆█▅▆▆▆▅▅▆
+◈ August 2025 to November 2025 · Major Rebuild Signal
+│   The homepage changed substantially and remained different afterward.
+◈ February 2025 to July 2025 · Sustained Site Expansion
+│   The archived page footprint grew steadily and remained higher.
+◈ September 2024 to February 2025 · Major Rebuild Signal
+│   The homepage changed substantially and remained different afterward.
 
-◈ **April 2026 to June 2026** · _Major Rebuild Signal_
-│   A change in archived response length persisted for two later months; inspect the snapshots to confirm a redesign.
-│   strong heuristic evidence.
-
-_[link to wayback machine →](https://web.archive.org/web/*/northline.example)_
+link to wayback machine →
+_
 
  
 
