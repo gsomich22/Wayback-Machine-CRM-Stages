@@ -17,7 +17,7 @@ Use this prompt:
 
 Your assistant can inspect headers or CRM field definitions to make those questions concrete. For Customers, it will also clarify which actual close date to use and how to handle multiple deals for one company. For Leads, it will clarify the list or filter and the analysis date.
 
-**You get a report first.** CRM writeback is optional. The skill prefers multi-select stage fields where supported, keeps historical customer results separate from current stages, and skips unresolved records. It never treats a CSV or connection as permission to upload data.
+**You get a report first:** a polished, gtmgrace.com-branded HTML file with stage breakdowns, searchable results, expandable evidence, and CSV export. Open it in your browser; it works offline. CRM writeback is optional. The skill prefers multi-select stage fields where supported, keeps historical customer results separate from current stages, and skips unresolved records. It never treats a CSV or connection as permission to upload data.
 
 The assistant needs file access, Node.js 22+, and internet access to run the bundled engine. A CRM connector alone is not enough. If those capabilities are unavailable, it can prepare the input and explain what remains unrun, but it must not claim to have analyzed the websites.
 

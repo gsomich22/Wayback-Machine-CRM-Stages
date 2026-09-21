@@ -5,7 +5,7 @@ description: Analyze customer website stages at close or current lead website st
 
 # Website history: Customers or Leads
 
-Use the bundled deterministic engine to analyze public archive evidence. Produce a report first. A CRM connection or customer CSV is a source of data, not permission to upload, import, create fields, or update records.
+Use the bundled deterministic engine to analyze public archive evidence. Produce a branded HTML report first. A CRM connection or customer CSV is a source of data, not permission to upload, import, create fields, or update records.
 
 ## Choose the path and source
 
@@ -48,7 +48,7 @@ Replace ENGINE and WORK with actual paths; invoke the process using an argument 
 
 ## Deliver the report
 
-Return a readable table and a downloadable CSV or JSON, with clear counts for analyzed, unresolved, and missing-input rows. Summarize observed customer patterns or lead research groups without inventing buying intent, predictive scores, or exact redesign dates. Clearly label Insufficient History and No Strong Signal rather than hiding them from the denominator.
+Return a short readable summary, a downloadable CSV or JSON, and the branded HTML report. Follow [html-report.md](references/html-report.md) to generate the single-file report with the bundled renderer. Keep clear counts for analyzed, unresolved, and missing-input rows. Summarize observed customer patterns or lead research groups without inventing buying intent, predictive scores, or exact redesign dates. Clearly label Insufficient History and No Strong Signal rather than hiding them from the denominator.
 
 This completes a report-only request. No CRM access is needed for writeback when no writeback was requested.
 

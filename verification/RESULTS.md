@@ -1,3 +1,12 @@
+## Branded HTML report verification
+
+- 40 tests pass, including customer cutoff selection, unresolved-row totals, input validation, HTML/script escaping, archive-link validation, and CSV formula protection. The extracted skill also passes all 40 tests.
+- The exported skill renders the customer report without npm installation or network access.
+- Browser checks cover both paths, search, stage filtering, evidence disclosure, CSV download, full-report print view, and mobile overflow. No external requests or JavaScript errors were observed.
+- Desktop and mobile screenshots were visually inspected. Both supplied HTML examples are clearly marked as synthetic data.
+- React Bits Animated List was installed through shadcn and adapted for the report. Its license and runtime dependency notices are included.
+- This validates local report generation, not live archive research, CRM updates, or model adherence to the skill instructions.
+
 ## Customers & Leads skill export verification
 
 - Skill metadata validation passed.
