@@ -37,8 +37,8 @@ In each HTTP node, keep Authentication as Generic Credential Type → Header Aut
 - `domain`: the company’s public domain.
 - `signals_base_url`: service URL without `/v1/signal`, for example `https://signals.yourdomain.com`.
 - `apply_changes`: leave `false` for a preview; change to `true` when ready to write.
-- Attio: `stage_attribute` is your company attribute’s API slug.
-- Apollo: `account_id` is an existing account’s ID; `stage_field_id` is its custom account field ID. Check that the account belongs to the domain. `account.<id>` or the bare 24-character field ID works.
+- Attio: `stage_attribute` is your Multi-select company attribute’s API slug. Create every exact stage option first.
+- Apollo: keep `stage_field_type: multiselect` and fill `stage_option_ids` with the JSON from your completed `examples/apollo-stage-options.json`. `account_id` is an existing account’s ID; `stage_field_id` is its custom account field ID. Check that the account belongs to the domain. `account.<id>` or the bare 24-character field ID works.
 
 The generic workflow does not write anywhere; its `apply_changes` setting is unused.
 
@@ -54,7 +54,7 @@ The imports process **one company per execution**. Replace the manual trigger/Se
 
 If adding a webhook, set authentication on it, validate its input, and choose a response strategy compatible with a multi-minute analysis. No public, unauthenticated webhook is bundled.
 
-For the generic path, connect **Stage field output** to your CRM’s Update Record node and map `website_activity_state` to your custom field. Resolve an existing record by domain or an explicitly supplied record ID; do not create a duplicate account for each run.
+For the generic path, connect **Stage field output** to your CRM’s Update Record node and map the `website_activity_states` array to your multi-select field, resolving option IDs where needed. Use scalar `website_activity_state` only for a text fallback. Replace the current selection instead of appending it. Resolve an existing record by domain or an explicitly supplied record ID; do not create a duplicate account for each run.
 
 ## For maintainers
 

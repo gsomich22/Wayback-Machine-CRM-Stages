@@ -42,3 +42,7 @@ Responses:
 `GET /health` is a simple availability check and does not call the archive. `SIGNALS_MAX_PAGES` (default 15), `SIGNALS_PAGE_SIZE` (default 15000) and `SIGNALS_TIMEOUT_SECONDS` (default 360) bound each archive read; see `.env.example`. For a table of hundreds of domains, the CSV path with a local loop is usually simpler than waiting on per-row enrichment.
 
 Primary reference: [Clay HTTP API enrichment](https://university.clay.com/docs/http-api-integration-overview). Checked September 17, 2026.
+
+## Multi-select destinations
+
+When sending the stage from Clay to a CRM, prefer a multi-select field and wrap the scalar stage as a one-element array, resolving the destination’s option IDs if required. Replace the current selection on refresh. Clay’s raw HTTP/CSV output remains a scalar string; use a text column when your Clay table does not offer a compatible multi-select column.

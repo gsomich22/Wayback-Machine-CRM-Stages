@@ -109,7 +109,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const r=$input.first().json; return [{json:{domain:r.domain,website_activity_state:r.website_activity_stage,analyzed_at:r.analyzed_at,archive_url:r.archive_url,coverage:r.coverage}}];"
+        "jsCode": "const r=$input.first().json; return [{json:{domain:r.domain,website_activity_state:r.website_activity_stage,website_activity_states:[r.website_activity_stage],analyzed_at:r.analyzed_at,archive_url:r.archive_url,coverage:r.coverage}}];"
       },
       "id": "node-6",
       "name": "Stage field output",

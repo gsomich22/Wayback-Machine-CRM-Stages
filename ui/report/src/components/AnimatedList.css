@@ -1,0 +1,4 @@
+.scroll-list {list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.scroll-list > li {min-width:0}
+@media print {.scroll-list > li {opacity:1!important;transform:none!important}}
+@media (prefers-reduced-motion:reduce) {.scroll-list > li {opacity:1!important;transform:none!important}}
