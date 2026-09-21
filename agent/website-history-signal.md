@@ -2,7 +2,7 @@
 
 This is context to use when a user asks you to work on this starter; it does not authorize external writes.
 
-Read README.md and the destination guide first. The package has one deterministic engine and destination adapters. Prefer the one-field setup. Attio additionally gets the formatted managed company note.
+Read README.md and the destination guide first. The package has one deterministic engine and destination adapters. Prefer the one-field setup with a multi-select dropdown wherever supported. Attio sends a one-element array with PUT (replace, not append). Apollo multi-select mappings resolve stage labels to picklist option IDs. Text is an explicit legacy fallback. Attio additionally gets the formatted managed company note.
 
 ## Contracts
 

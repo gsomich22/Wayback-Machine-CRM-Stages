@@ -88,6 +88,25 @@ const apolloFieldId = (key, id) => {
     );
   return bare;
 };
+function apolloValues(r, fieldMap) {
+  if (!fieldMap || typeof fieldMap !== "object" || Array.isArray(fieldMap))
+    return mapped(r, fieldMap, apolloFieldId);
+  const ids = Object.fromEntries(Object.entries(fieldMap).map(([key, entry]) => [key, typeof entry === "string" ? entry : entry?.id]));
+  const values = mapped(r, ids, apolloFieldId);
+  for (const [key, entry] of Object.entries(fieldMap)) {
+    if (typeof entry === "string") continue; // Explicit legacy text mapping.
+    if (entry.type !== "multiselect") throw new Error(`Apollo mapping for "${key}" must use type multiselect or a string field ID for text`);
+    const id = apolloFieldId(key, entry.id.trim());
+    const label = fields(r)[key];
+    if (!label) { values[id] = []; continue; }
+    const options = entry.options;
+    const option = options && !Array.isArray(options) && Object.hasOwn(options, label) ? options[label] : undefined;
+    if (typeof option !== "string" || !option.trim() || /^(replace_with|YOUR_)/i.test(option.trim()))
+      throw new Error(`Map Apollo option "${label}" to its real picklist option ID before syncing`);
+    values[id] = [option.trim()];
+  }
+  return values;
+}
 export function plan(r, { target, recordId, fieldMap }) {
   if (!["attio", "apollo"].includes(target))
     throw new Error("Provide --target attio or --target apollo");
@@ -113,6 +132,7 @@ export function plan(r, { target, recordId, fieldMap }) {
   const id = encodeURIComponent(recordId);
   if (target === "attio") {
     const v = mapped(r, fieldMap, attioSlug);
+    if (fieldMap.website_activity_state) v[fieldMap.website_activity_state.trim()] = [r.state];
     // Empty values are omitted rather than sent as "", so Attio keeps the prior value for those attributes.
     const values = Object.fromEntries(
       Object.entries(v).filter(([, x]) => x !== "" && x != null),
@@ -124,7 +144,7 @@ export function plan(r, { target, recordId, fieldMap }) {
     return {
       target,
       recordId,
-      method: "PATCH",
+      method: "PUT",
       url: `${ATTIO_API}/objects/companies/records/${id}`,
       body: { data: { values } },
       omitted: Object.keys(v).filter((k) => !(k in values)),
@@ -136,7 +156,7 @@ export function plan(r, { target, recordId, fieldMap }) {
     recordId,
     method: "PATCH",
     url: `${APOLLO_API}/accounts/${id}`,
-    body: { typed_custom_fields: mapped(r, fieldMap, apolloFieldId) },
+    body: { typed_custom_fields: apolloValues(r, fieldMap) },
   };
 }
 async function request(url, method, body, headers, fetcher) {
@@ -229,7 +249,7 @@ export async function applyPlan(p, { token, fetcher = fetch } = {}) {
     p.target === "attio"
       ? `${ATTIO_API}/objects/companies/records/`
       : `${APOLLO_API}/accounts/`;
-  if (!p.url.startsWith(prefix) || p.method !== "PATCH")
+  if (!p.url.startsWith(prefix) || p.method !== (p.target === "attio" ? "PUT" : "PATCH"))
     throw new Error("Invalid destination");
   const headers =
     p.target === "attio"

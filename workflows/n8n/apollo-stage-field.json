@@ -45,6 +45,18 @@
               "name": "stage_field_id",
               "value": "YOUR_ACCOUNT_CUSTOM_FIELD_ID",
               "type": "string"
+            },
+            {
+              "id": "setting-5",
+              "name": "stage_field_type",
+              "value": "multiselect",
+              "type": "string"
+            },
+            {
+              "id": "setting-6",
+              "name": "stage_option_ids",
+              "value": "{}",
+              "type": "string"
             }
           ]
         },
@@ -168,7 +180,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const c=$('Validate setup').first().json, r=$('Preview signal').first().json;\nconst fieldId=String(c.stage_field_id ?? '').replace(/^account\\./,'');\nif(!/^[0-9a-f]{24}$/i.test(c.account_id ?? '') || !/^[0-9a-f]{24}$/i.test(fieldId)) throw new Error('Enter the Apollo account ID and custom account field ID. The field ID can begin with account.');\nreturn [{json:{accountId:c.account_id,body:{typed_custom_fields:{[fieldId]:r.website_activity_stage}}}}];"
+        "jsCode": "const c=$('Validate setup').first().json, r=$('Preview signal').first().json;\nconst fieldId=String(c.stage_field_id ?? '').replace(/^account\\./,'');\nif(!/^[0-9a-f]{24}$/i.test(c.account_id ?? '') || !/^[0-9a-f]{24}$/i.test(fieldId)) throw new Error('Enter the Apollo account ID and custom account field ID. The field ID can begin with account.');\nlet value=r.website_activity_stage;\nif ((c.stage_field_type ?? 'multiselect') === 'multiselect') {\n let options;\n try { options=typeof c.stage_option_ids==='string'?JSON.parse(c.stage_option_ids):c.stage_option_ids; } catch { throw new Error('stage_option_ids must be JSON mapping stage names to Apollo picklist option IDs.'); }\n const option=options && !Array.isArray(options) && Object.hasOwn(options,r.website_activity_stage)?options[r.website_activity_stage]:undefined;\n if(typeof option!=='string' || !option.trim() || /^(replace_with|YOUR_)/i.test(option.trim())) throw new Error('Map the current stage to its real Apollo picklist option ID in stage_option_ids.');\n value=[option.trim()];\n} else if(c.stage_field_type!=='text') throw new Error('stage_field_type must be multiselect or text.');\nreturn [{json:{accountId:c.account_id,body:{typed_custom_fields:{[fieldId]:value}}}}];"
       },
       "id": "node-8",
       "name": "Prepare Apollo write",

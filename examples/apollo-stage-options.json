@@ -1,0 +1,12 @@
+{
+  "Fresh Rebuild": "replace_with_fresh_rebuild_option_id",
+  "Stale After Rebuild": "replace_with_stale_after_rebuild_option_id",
+  "Actively Iterating": "replace_with_actively_iterating_option_id",
+  "Expanding": "replace_with_expanding_option_id",
+  "Streamlining": "replace_with_streamlining_option_id",
+  "Long Quiet Stretch": "replace_with_long_quiet_stretch_option_id",
+  "Gone Quiet": "replace_with_gone_quiet_option_id",
+  "No Strong Signal": "replace_with_no_strong_signal_option_id",
+  "Insufficient History": "replace_with_insufficient_history_option_id",
+  "Unknown": "replace_with_unknown_option_id"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Website History — Customers & Leads"
+  short_description: "Analyze customer or lead stages from CSVs or a CRM"
+  default_prompt: "Use $website-history to analyze my customers or leads from a CSV or connected CRM, then create the branded HTML report before proposing any CRM updates."

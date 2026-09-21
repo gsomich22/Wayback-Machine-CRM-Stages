@@ -1,3 +1,34 @@
+## AI sandbox follow-up verification
+
+- 44 tests pass, including skill launcher proxy/runtime handling, default and overridden budgets, slower/stalled archive requests, and separate CSV generation.
+- The skill launcher completes the offline fixture; invalid request timeout values fail before a network call.
+- Browser checks verify direct CSV download, the standalone print action, canonical www signature links, and restricted iframe export help. A sandbox denying clipboard access still exposes a selectable request; no sandbox print or download is attempted. Search and mobile width checks pass.
+- These checks reproduce browser restrictions locally, not inside the user’s actual Claude session. The supplied run log suggests proxy configuration contributed to the retry, but it does not expose the original error; no live archive rerun was performed.
+
+## Branded HTML report verification
+
+- 40 tests pass, including customer cutoff selection, unresolved-row totals, input validation, HTML/script escaping, archive-link validation, and CSV formula protection. The extracted skill also passes all 40 tests.
+- The exported skill renders the customer report without npm installation or network access.
+- Browser checks cover both paths, search, stage filtering, evidence disclosure, CSV download, full-report print view, and mobile overflow. No external requests or JavaScript errors were observed.
+- Desktop and mobile screenshots were visually inspected. Both supplied HTML examples are clearly marked as synthetic data.
+- React Bits Animated List was installed through shadcn and adapted for the report. Its license and runtime dependency notices are included.
+- This validates local report generation, not live archive research, CRM updates, or model adherence to the skill instructions.
+
+## Customers & Leads skill export verification
+
+- Skill metadata validation passed.
+- The standalone ZIP passed all 35 engine tests and the offline demo after extraction.
+- All local Markdown links in the exported ZIP resolve; repeated exports are byte-identical.
+- The export excludes local credentials and repository metadata.
+- CRM clarification, historical/current separation, and explicit preview confirmation are specified in the skill instructions. Model adherence, platform installation, and live CRM writes were not exercised.
+
+## Multi-select update verification
+
+- 35 tests passed on Node.js 22 and 26, including replacement of prior Attio selections, custom attribute mapping, Apollo option-ID mapping, missing-option rejection, and workflow defaults.
+- Offline demo passed. All JSON parsed; local Markdown links resolved.
+- The user-edited example note, HTML preview, and note formatter are unchanged from the latest GitHub version.
+- No credentialed CRM writes were made; account-specific multi-select compatibility remains a live setup check.
+
 # Verification · September 21, 2026
 
 - 32 automated tests passed under Node.js 22 and Node.js 26: analysis, archive pagination/retries, CRM request contracts, local HTTP endpoints, note formatting, and workflow Code-node safeguards.

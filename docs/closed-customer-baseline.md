@@ -2,15 +2,17 @@
 
 Start with companies whose outcomes you know. Ask what evidence was available before they became customers, then compare that with the website stages of new accounts.
 
-Use [examples/closed-customers.csv](../examples/closed-customers.csv) as your input checklist. Its companies are fictional. For each real row, run an analysis with the close date as its cutoff:
+Use the **Customers** path in the [downloadable skill](../downloads/website-history-skill.zip). Attach your customer CSV directly to the AI conversation or select your connected CRM. The assistant checks the domains, actual close-date field, cohort filters, and handling of multiple deals, then runs the included engine once per domain/date and produces a combined report. See [the two-path guide](../agent/START-HERE.md).
+
+Each analysis uses the actual close date as its cutoff. A rebuild requires confirmation captures; if confirmation only appears after close, it cannot be counted as confirmed at close. Incomplete archive reads stay unresolved. This is an assistant-guided batch workflow, not a separate CSV-upload application.
+
+If you ask to write results back, the skill first confirms the destination and previews exact changes. Historical customer stages belong in separate historical fields or dated notes, never the company’s current website-state field or current managed note.
+
+For developers, the per-row command is:
 
 ```sh
-npm run analyze -- --domain example.com --as-of 2025-08-14 --out baseline/example
+node src/cli.mjs analyze --domain example.com --as-of 2025-08-14 --out baseline/example
 ```
-
-The archive queries and classifier use that date. A rebuild requires later confirmation captures; a rebuild first seen before close but confirmed after close must not be counted as known at close. The cutoff prevents those later captures from entering the result.
-
-Record `state` as `stage_at_close`, `signals` as the dated evidence, and `status` as coverage. Keep incomplete results in an “unresolved” group and retry them; do not treat them as quiet. The current starter runs this one company at a time. It does not automatically batch the CSV or infer a winning sales pattern.
 
 Compare how often each stage appears across customers, ideally alongside noncustomers from a similar period. Differences are associations, not proof that a website stage caused a purchase. Wayback’s current availability may also differ from what was accessible on the historical date.
 

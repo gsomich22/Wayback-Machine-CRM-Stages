@@ -1,3 +1,9 @@
+# Multi-select update
+
+Website activity state now defaults to multi-select wherever supported. Attio writes one selected option with PUT, replacing the prior state. Apollo supports label-to-option-ID mappings, and its n8n workflow defaults to multi-select. The generic workflow exposes an array for multi-select destinations while retaining the original scalar output.
+
+Existing Attio text/single-select users must create a multi-select field and update the mapped slug. Existing Apollo text users can explicitly retain text mode or migrate to a multi-select picklist. This update does not change account schemas, note formatting, stage timing, or the user-edited example note.
+
 # Release notes · starter v0.3.0 / package v7
 
 This folder is the shareable starter source. It has not been published to GitHub or a hosting service. The original launch video and social-post materials remain in the separate version 6 launch ZIP; they are not required to use this starter.

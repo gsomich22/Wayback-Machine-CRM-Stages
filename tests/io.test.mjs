@@ -129,11 +129,11 @@ test("Attio plan updates fields and creates one markdown note, Apollo has no not
   });
   assert.equal(new URL(calls[0].url).searchParams.get("limit"), "50");
   assert.equal(new URL(calls[0].url).searchParams.get("parent_record_id"), ATTIO_ID);
-  assert.equal(calls[1].method, "PATCH");
+  assert.equal(calls[1].method, "PUT");
   assert.equal(calls[1].url, `https://api.attio.com/v2/objects/companies/records/${ATTIO_ID}`);
-  assert.equal(
+  assert.deepEqual(
     JSON.parse(calls[1].body).data.values.website_activity_state,
-    "Fresh Rebuild",
+    ["Fresh Rebuild"],
   );
   const created = JSON.parse(calls[2].body).data;
   assert.equal(created.parent_object, "companies");
@@ -168,7 +168,7 @@ test("Attio omits empty values and requires UUID record ids and slug-like attrib
     recordId: ATTIO_ID,
     fieldMap: { website_activity_state: "website_activity_state", last_signal: "last_signal" },
   });
-  assert.deepEqual(p.body.data.values, { website_activity_state: "Fresh Rebuild" });
+  assert.deepEqual(p.body.data.values, { website_activity_state: ["Fresh Rebuild"] });
   assert.deepEqual(p.omitted, ["last_signal"]);
   const full = plan(withFinding, {
     target: "attio",
@@ -394,4 +394,38 @@ test("HTTP errors include status, body excerpt and a hint", async () => {
     /connection failed \(ENOTFOUND\)/,
   );
   await assert.rejects(applyPlan(p, {}), /Set APOLLO_API_KEY/);
+});
+
+test('Attio multi-select replaces the current stage and keeps optional fields as text', async () => {
+ const p=plan(withFinding,{target:'attio',recordId:ATTIO_ID,fieldMap:{website_activity_state:'custom_state',last_signal:'last_signal'}});
+ assert.equal(p.method,'PUT');
+ assert.deepEqual(p.body.data.values.custom_state,['Fresh Rebuild']);
+ assert.equal(typeof p.body.data.values.last_signal,'string');
+ let selected=['Gone Quiet'];
+ await applyPlan(p,{token:'test',fetcher:async(url,o)=>{
+  if(url.includes('/records/')){
+   const next=JSON.parse(o.body).data.values.custom_state;
+   selected=o.method==='PUT'?next:[...selected,...next];
+  }
+  return response({data:[]});
+ }});
+ assert.deepEqual(selected,['Fresh Rebuild']);
+});
+test('Apollo multi-select maps stage names to option IDs and rejects missing options',()=>{
+ const option='0123456789abcdef01234567';
+ const fieldMap={website_activity_state:{id:APOLLO_FIELD,type:'multiselect',options:{'Fresh Rebuild':option}}};
+ const p=plan(sample,{target:'apollo',recordId:APOLLO_ID,fieldMap});
+ assert.deepEqual(p.body.typed_custom_fields[APOLLO_FIELD],[option]);
+ assert.throws(()=>plan({...sample,state:'Gone Quiet'},{target:'apollo',recordId:APOLLO_ID,fieldMap}),/option/);
+});
+test('archive per-request budget permits slower pages and still bounds stalled requests',async()=>{
+  const delayed=async (_url,{signal})=>{
+    await new Promise((resolve,reject)=>{const timer=setTimeout(resolve,25);signal.addEventListener('abort',()=>{clearTimeout(timer);reject(signal.reason)},{once:true});});
+    return response([['timestamp'],['20260101120000']]);
+  };
+  const allowed=await readPages({}, {fetcher:delayed,requestTimeoutMs:100,backoffMs:1});
+  assert.equal(allowed.complete,true);
+  const timedOut=await readPages({}, {fetcher:delayed,requestTimeoutMs:2,backoffMs:1});
+  assert.equal(timedOut.complete,false);assert.match(timedOut.error,/attempts/);
+  await assert.rejects(()=>readPages({}, {requestTimeoutMs:0}),/positive integer/);
 });

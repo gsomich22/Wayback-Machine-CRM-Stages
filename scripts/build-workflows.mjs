@@ -61,17 +61,25 @@ if(existing && !(existing.content_plaintext ?? existing.content_markdown ?? '').
 const noteId=existing?.id?.note_id;
 if(existing && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(noteId ?? '')) throw new Error('Missing valid note ID.');
 const note={title:r.note_title,format:'markdown',content:r.note_markdown};
-return [{json:{recordId:r.recordId,recordBody:{data:{values:{[config.stage_attribute]:r.website_activity_stage}}},noteMethod:existing?'PATCH':'POST',noteUrl:'https://api.attio.com/v2/notes'+(existing?'/'+encodeURIComponent(noteId):''),noteBody:{data:existing?note:{parent_object:'companies',parent_record_id:r.recordId,...note}}}}];`);link(attio,'Find managed note','Prepare Attio write');
-http(attio,'Update website stage','PATCH',expr("'https://api.attio.com/v2/objects/companies/records/' + $json.recordId"),expr('JSON.stringify($json.recordBody)'));link(attio,'Prepare Attio write','Update website stage');
+return [{json:{recordId:r.recordId,recordBody:{data:{values:{[config.stage_attribute]:[r.website_activity_stage]}}},noteMethod:existing?'PATCH':'POST',noteUrl:'https://api.attio.com/v2/notes'+(existing?'/'+encodeURIComponent(noteId):''),noteBody:{data:existing?note:{parent_object:'companies',parent_record_id:r.recordId,...note}}}}];`);link(attio,'Find managed note','Prepare Attio write');
+http(attio,'Update website stage','PUT',expr("'https://api.attio.com/v2/objects/companies/records/' + $json.recordId"),expr('JSON.stringify($json.recordBody)'));link(attio,'Prepare Attio write','Update website stage');
 http(attio,'Create or update note',expr("$('Prepare Attio write').first().json.noteMethod"),expr("$('Prepare Attio write').first().json.noteUrl"),expr("JSON.stringify($('Prepare Attio write').first().json.noteBody)"));link(attio,'Update website stage','Create or update note');
 code(attio,'Done',"return [{json:{applied:true,domain:$('Preview signal').first().json.domain,website_activity_state:$('Preview signal').first().json.website_activity_stage,note_action:$('Prepare Attio write').first().json.noteMethod==='POST'?'created':'updated'}}];");link(attio,'Create or update note','Done');
 const generic=base('Website History · Portable stage field');
-code(generic,'Stage field output',"const r=$input.first().json; return [{json:{domain:r.domain,website_activity_state:r.website_activity_stage,analyzed_at:r.analyzed_at,archive_url:r.archive_url,coverage:r.coverage}}];");link(generic,'Preview signal','Stage field output');
-const apollo=base('Website History · Apollo account stage field',{account_id:'YOUR_APOLLO_ACCOUNT_ID',stage_field_id:'YOUR_ACCOUNT_CUSTOM_FIELD_ID'});gate(apollo);
+code(generic,'Stage field output',"const r=$input.first().json; return [{json:{domain:r.domain,website_activity_state:r.website_activity_stage,website_activity_states:[r.website_activity_stage],analyzed_at:r.analyzed_at,archive_url:r.archive_url,coverage:r.coverage}}];");link(generic,'Preview signal','Stage field output');
+const apollo=base('Website History · Apollo account stage field',{account_id:'YOUR_APOLLO_ACCOUNT_ID',stage_field_id:'YOUR_ACCOUNT_CUSTOM_FIELD_ID',stage_field_type:'multiselect',stage_option_ids:'{}'});gate(apollo);
 code(apollo,'Prepare Apollo write',String.raw`const c=$('Validate setup').first().json, r=$('Preview signal').first().json;
 const fieldId=String(c.stage_field_id ?? '').replace(/^account\./,'');
 if(!/^[0-9a-f]{24}$/i.test(c.account_id ?? '') || !/^[0-9a-f]{24}$/i.test(fieldId)) throw new Error('Enter the Apollo account ID and custom account field ID. The field ID can begin with account.');
-return [{json:{accountId:c.account_id,body:{typed_custom_fields:{[fieldId]:r.website_activity_stage}}}}];`);link(apollo,'Apply changes?','Prepare Apollo write');
+let value=r.website_activity_stage;
+if ((c.stage_field_type ?? 'multiselect') === 'multiselect') {
+ let options;
+ try { options=typeof c.stage_option_ids==='string'?JSON.parse(c.stage_option_ids):c.stage_option_ids; } catch { throw new Error('stage_option_ids must be JSON mapping stage names to Apollo picklist option IDs.'); }
+ const option=options && !Array.isArray(options) && Object.hasOwn(options,r.website_activity_stage)?options[r.website_activity_stage]:undefined;
+ if(typeof option!=='string' || !option.trim() || /^(replace_with|YOUR_)/i.test(option.trim())) throw new Error('Map the current stage to its real Apollo picklist option ID in stage_option_ids.');
+ value=[option.trim()];
+} else if(c.stage_field_type!=='text') throw new Error('stage_field_type must be multiselect or text.');
+return [{json:{accountId:c.account_id,body:{typed_custom_fields:{[fieldId]:value}}}}];`);link(apollo,'Apply changes?','Prepare Apollo write');
 http(apollo,'Update Apollo field','PATCH',expr("'https://api.apollo.io/api/v1/accounts/' + $json.accountId"),expr('JSON.stringify($json.body)'),'Apollo');link(apollo,'Prepare Apollo write','Update Apollo field');
 for(const [file,w] of [['attio-website-history-note.json',attio],['generic-stage-field.json',generic],['apollo-stage-field.json',apollo]]){
  add(w,'Read me first','stickyNote',{content:'## Start here\n1. Read QUICKSTART.md and docs/n8n.md.\n2. Set the domain and service URL in Setup.\n3. Connect the named Header Auth credentials to HTTP nodes.\n4. Keep apply_changes false for a preview.\n\nRun ONE company per execution. Use a batch-size-one loop for lists.\nNo credentials or customer data are included.\nAn analysis service is required; this workflow is an adapter.',height:320,width:450},1);

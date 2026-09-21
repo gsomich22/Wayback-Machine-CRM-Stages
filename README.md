@@ -4,21 +4,48 @@
 
 Give it a domain. Get a website-activity stage, dated evidence, and a readable summary of what changed in its public archive history. Use the stage to organize accounts, spot patterns across customers, and decide which websites deserve a closer look.
 
-For **Attio**, the starter writes the stage and a formatted company note. For **Apollo, Clay, or another CRM**, start with one custom field: **Website activity state**.
+For **Attio**, the starter writes the stage to a **Multi-select** dropdown and creates a formatted company note. For **Apollo, Clay, or another CRM**, start with one custom field: **Website activity state**, using multi-select wherever supported. Apollo’s writer maps stage names to your picklist option IDs; text is a legacy fallback.
 
-You do not need to understand the code to understand the output. You will need someone comfortable connecting a workflow or running a small service to automate it.
+Choose the **Website History skill** for guided research in Claude, ChatGPT, or a desktop AI assistant. Choose a CRM workflow for ongoing automation. You can preview the results before connecting any accounts.
 
 ## What you get
 
 | Path | Result | Start here |
 |---|---|---|
+| Claude / ChatGPT / desktop AI | **Website History skill** — customer or lead research, a branded report, and optional reviewed CRM updates | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
 | Attio | One website-activity field + a company note with an activity bar, dated findings, and an archive link | [Attio setup](docs/attio.md) |
 | Apollo | One custom account field; ready-to-import n8n workflow or local command | [Apollo setup](docs/apollo.md) |
 | Clay / another CRM | A field value you can map into your table or CRM, through HTTP, n8n, or CSV | [Portable field setup](docs/generic.md) |
-| Claude / ChatGPT | A guide and copyable prompt to understand the package and adapt it to your tools | [Start with an AI assistant](agent/START-HERE.md) |
 | Local preview | Sample JSON, CSV, and the Attio note, with no account connection | [Quickstart](QUICKSTART.md) |
 
-The starter is free, MIT-licensed source code. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
+The starter’s original source code is free and MIT-licensed. The optional report interface includes React Bits under its bundled third-party license. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
+
+## Claude / ChatGPT: use the Website History skill
+
+**[Download the skill ZIP](downloads/website-history-skill.zip)**
+
+Give the skill to your assistant, then choose what to research:
+
+| Path | What it does | What you provide |
+|---|---|---|
+| **Customers** | Finds the website stage at each customer’s actual close date | A CSV or connected CRM with company domains and actual close dates |
+| **Leads** | Finds each company’s current website stage | A CSV or connected CRM with company domains |
+
+1. Import the ZIP if your assistant supports skills. Otherwise, attach or extract it and ask the assistant to follow `website-history/SKILL.md`.
+2. Attach your CSV in the same conversation, or tell the assistant which connected CRM and list to use.
+3. Ask it to run the skill. It will clarify the relevant records and fields, then return your results.
+
+A simple starting prompt:
+
+> Use the Website History skill to analyze my [customers / leads] from [this CSV / my connected CRM]. Ask me about any missing details, then create the HTML report and CSV. Show me the proposed changes before writing anything to my CRM, and wait for my approval.
+
+**You get a branded HTML report and a separate CSV download.** The report includes stage counts, searchable company results, and expandable evidence. Download and open the HTML in a browser; it works offline. In-chat export buttons provide a copyable request if the preview blocks printing or downloads.
+
+**CRM updates are optional.** Before writing, the skill asks about the workspace, matching records, fields/options, and company notes, then shows a preview for approval. Customer-at-close results stay separate from current website stages.
+
+The download includes the analysis engine and report template. Your assistant needs file access, Node.js execution, and internet access for research; attaching the ZIP alone does not grant those capabilities or connect a CRM. [Skill setup and starter prompt](agent/START-HERE.md)
+
+[Preview a Leads report](examples/report-leads.html) · [Preview a Customers report](examples/report-customers.html) — synthetic examples; download and open in a browser.
 
 ## What it looks like
 
@@ -100,7 +127,10 @@ Wayback Machine metadata can show patterns worth investigating. It cannot establ
 - `config/`: stage timing and the portable JSON schema.
 - `workflows/n8n/`: Attio, Apollo, and generic workflow imports.
 - `scripts/build-workflows.mjs`: rebuild the workflow JSON after editing its logic.
-- `agent/`: context and adaptation prompts for an AI assistant.
+- `skills/website-history/`: the Customers/Leads skill, offline HTML renderer, and CRM confirmation rules.
+- `ui/report/` (repository checkout): editable React report source; run `npm ci --prefix ui/report` and `npm run build --prefix ui/report` to rebuild bundled assets.
+- `downloads/website-history-skill.zip`: self-contained skill export; rebuild with `python3 scripts/export-skill.py`.
+- `agent/`: the two-path starting guide and technical adaptation context.
 - `tests/`: analysis, API contracts, note formatting, and workflow safeguards.
 
 Run `npm test` before sharing changes. This release has local automated verification; an import-and-execute check in your n8n instance and a live write to a test CRM company remain setup checks. No live CRM records were changed to build this package.
