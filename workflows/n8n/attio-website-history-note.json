@@ -276,7 +276,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const r=$('Resolve company').first().json;\nconst config=$('Validate setup').first().json;\nconst pages=$input.all().map(i=>i.json);\nif(!pages.length || pages.some(p=>!Array.isArray(p.data)) || pages.at(-1).data.length>=50) throw new Error('Note lookup incomplete. Stop before writing; check pagination.');\nconst matches=pages.flatMap(p=>p.data).filter(n=>n.title===r.note_title);\nif(matches.length>1) throw new Error('Multiple matching notes. Resolve duplicates in Attio before retrying.');\nconst existing=matches[0];\nif(existing && !(existing.content_plaintext ?? existing.content_markdown ?? '').includes('Managed by Website History Signals')) throw new Error('The matching note is not managed by this starter. Rename it before continuing.');\nconst noteId=existing?.id?.note_id;\nif(existing && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(noteId ?? '')) throw new Error('Missing valid note ID.');\nconst note={title:r.note_title,format:'markdown',content:r.note_markdown};\nreturn [{json:{recordId:r.recordId,recordBody:{data:{values:{[config.stage_attribute]:r.website_activity_stage}}},noteMethod:existing?'PATCH':'POST',noteUrl:'https://api.attio.com/v2/notes'+(existing?'/'+encodeURIComponent(noteId):''),noteBody:{data:existing?note:{parent_object:'companies',parent_record_id:r.recordId,...note}}}}];"
+        "jsCode": "const r=$('Resolve company').first().json;\nconst config=$('Validate setup').first().json;\nconst pages=$input.all().map(i=>i.json);\nif(!pages.length || pages.some(p=>!Array.isArray(p.data)) || pages.at(-1).data.length>=50) throw new Error('Note lookup incomplete. Stop before writing; check pagination.');\nconst matches=pages.flatMap(p=>p.data).filter(n=>n.title===r.note_title);\nif(matches.length>1) throw new Error('Multiple matching notes. Resolve duplicates in Attio before retrying.');\nconst existing=matches[0];\nif(existing && !(existing.content_plaintext ?? existing.content_markdown ?? '').includes('Managed by Website History Signals')) throw new Error('The matching note is not managed by this starter. Rename it before continuing.');\nconst noteId=existing?.id?.note_id;\nif(existing && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(noteId ?? '')) throw new Error('Missing valid note ID.');\nconst note={title:r.note_title,format:'markdown',content:r.note_markdown};\nreturn [{json:{recordId:r.recordId,recordBody:{data:{values:{[config.stage_attribute]:[r.website_activity_stage]}}},noteMethod:existing?'PATCH':'POST',noteUrl:'https://api.attio.com/v2/notes'+(existing?'/'+encodeURIComponent(noteId):''),noteBody:{data:existing?note:{parent_object:'companies',parent_record_id:r.recordId,...note}}}}];"
       },
       "id": "node-11",
       "name": "Prepare Attio write",
@@ -289,7 +289,7 @@
     },
     {
       "parameters": {
-        "method": "PATCH",
+        "method": "PUT",
         "url": "={{ 'https://api.attio.com/v2/objects/companies/records/' + $json.recordId }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",

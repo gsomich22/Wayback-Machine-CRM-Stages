@@ -12,7 +12,7 @@
 | Gateway timeout around a fixed duration | Your hosting proxy or workflow plan may have a shorter limit than the analysis; use a suitable host or the local route |
 | Insufficient History with complete coverage | Retrieval finished but Wayback has too little useful history; this is not an authentication error |
 | No company / multiple companies in Attio | Fix the existing company’s domain or resolve duplicates; the workflow will not create a company for you |
-| Unknown Attio attribute / select option | Check the API slug and create every exact stage option, or use Text |
+| Unknown Attio attribute / select option | Check that the field is Multi-select, check its API slug, and create every exact stage option |
 | Note title exists but is not managed | Rename that unrelated note so the starter can create its own |
 | Stage updated, note failed | Inspect Attio, fix the note error, then rerun serially; the two writes are not transactional |
 | Apollo field ID rejected | Use the account custom field ID from the fields API; replace the example placeholder |

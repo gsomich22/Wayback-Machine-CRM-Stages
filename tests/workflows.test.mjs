@@ -25,7 +25,8 @@ test('Attio workflow reuses its note and stops for unowned, duplicate or truncat
  const run=pages=>execute(w,'Prepare Attio write',pages,prev)[0].json;
  assert.equal(run([{data:[]}]).noteMethod,'POST');
  assert.equal(run([{data:[owned]}]).noteMethod,'PATCH');
- assert.equal(run([{data:[owned]}]).recordBody.data.values.website_activity_state,'Fresh Rebuild');
+ assert.equal(JSON.stringify(run([{data:[owned]}]).recordBody.data.values.website_activity_state),JSON.stringify(['Fresh Rebuild']));
+ assert.equal(w.nodes.find(n=>n.name==='Update website stage').parameters.method,'PUT');
  assert.throws(()=>run([{data:[{...owned,content_plaintext:'my own research'}]}]),/not managed/);
  assert.throws(()=>run([{data:[owned,owned]}]),/Multiple/);
  assert.throws(()=>run([{data:Array.from({length:50},()=>({title:'Other'}))}]),/incomplete/);
@@ -43,11 +44,20 @@ test('workflows are credential-free and all graph connections and code nodes res
 
 test('workflow preview blocks partial or mismatched signals and Apollo writes only the custom field',async()=>{
  const w=await workflow('apollo-stage-field.json');
- const prev={'Validate setup':{domain:'example.com',account_id:'123456789012345678901234',stage_field_id:'account.abcdefabcdefabcdefabcdef'},'Preview signal':signal};
+ const prev={'Validate setup':{domain:'example.com',account_id:'123456789012345678901234',stage_field_id:'account.abcdefabcdefabcdefabcdef',stage_field_type:'text'},'Preview signal':signal};
  assert.throws(()=>execute(w,'Preview signal',[{...signal,coverage:'partial'}],prev),/Incomplete/);
  assert.throws(()=>execute(w,'Preview signal',[{...signal,domain:'other.com'}],prev),/mismatched/);
  const body=execute(w,'Prepare Apollo write',[signal],prev)[0].json.body;
  assert.equal(body.typed_custom_fields.abcdefabcdefabcdefabcdef,'Fresh Rebuild');
  assert.equal(Object.keys(body).join(','),'typed_custom_fields');
  assert.throws(()=>execute(w,'Prepare Apollo write',[signal],{...prev,'Validate setup':{...prev['Validate setup'],stage_field_id:'placeholder'}}),/account ID/);
+});
+
+test('Apollo workflow defaults to multi-select and fails before writing unmapped options',async()=>{
+ const w=await workflow('apollo-stage-field.json');
+ assert.equal(w.nodes.find(n=>n.name==='Setup').parameters.assignments.assignments.find(a=>a.name==='stage_field_type').value,'multiselect');
+ const prev={'Validate setup':{account_id:'123456789012345678901234',stage_field_id:'abcdefabcdefabcdefabcdef',stage_option_ids:JSON.stringify({'Fresh Rebuild':'option-1'})},'Preview signal':signal};
+ const value=execute(w,'Prepare Apollo write',[signal],prev)[0].json.body.typed_custom_fields.abcdefabcdefabcdefabcdef;
+ assert.equal(JSON.stringify(value),JSON.stringify(['option-1']));
+ assert.throws(()=>execute(w,'Prepare Apollo write',[signal],{...prev,'Validate setup':{...prev['Validate setup'],stage_option_ids:'{}'}}),/option ID/);
 });

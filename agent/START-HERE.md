@@ -8,7 +8,7 @@ Attach the starter ZIP if your chat supports ZIPs. Otherwise attach `README.md`,
 
 Use this prompt:
 
-> I want to use this Website History Signals Starter with [Attio / Apollo / Clay / my CRM]. I am [comfortable / not comfortable] with code. First read the README and destination guide, explain what I will get, and tell me which account details I need. Start with the offline example. Help me connect only the website-activity field; for Attio, include the formatted company note. Keep the default six-month Fresh Rebuild rule. Use the supplied evidence and do not invent website changes. Tell me whether you can actually execute code and access my tools, or whether I need to run the steps. Keep API keys in environment variables or n8n credentials, not chat messages. Show the preview before enabling writes.
+> I want to use this Website History Signals Starter with [Attio / Apollo / Clay / my CRM]. I am [comfortable / not comfortable] with code. First read the README and destination guide, explain what I will get, and tell me which account details I need. Start with the offline example. Help me connect only the website-activity field, using a multi-select dropdown wherever supported; for Attio, include the formatted company note. Keep the default six-month Fresh Rebuild rule. Use the supplied evidence and do not invent website changes. Tell me whether you can actually execute code and access my tools, or whether I need to run the steps. Keep API keys in environment variables or n8n credentials, not chat messages. Show the preview before enabling writes.
 
 ## If your assistant can work in a local folder
 
