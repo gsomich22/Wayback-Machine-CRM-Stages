@@ -5,5 +5,5 @@ node_modules/
 *.local.json
 analysis/
 demo-output/
-report/
+/report/
 .DS_Store

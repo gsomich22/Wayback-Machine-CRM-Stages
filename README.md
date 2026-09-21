@@ -18,7 +18,7 @@ You do not need to understand the code to understand the output. You will need s
 | Claude / ChatGPT / desktop AI | Downloadable skill: Customers at close or Leads today, from a CSV or connected CRM | [Download skill](downloads/website-history-skill.zip) · [Start here](agent/START-HERE.md) |
 | Local preview | Sample JSON, CSV, and the Attio note, with no account connection | [Quickstart](QUICKSTART.md) |
 
-The starter is free, MIT-licensed source code. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
+The starter’s original source code is free and MIT-licensed. The optional report interface includes React Bits under its bundled third-party license. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
 
 ## What it looks like
 
@@ -85,6 +85,8 @@ The workflows call the included analysis service. **n8n Cloud and Clay need a re
 
 The assistant asks about the relevant records and fields, runs the included engine where code execution and internet access are available, and returns a report. If you want results in your CRM, it first resolves the workspace, record matching, field/options, and note handling, then shows the proposed changes and waits for your approval. Historical customer results stay separate from current website states.
 
+Both paths include a **gtmgrace.com-branded HTML report** in the cream, navy, violet, and sage palette: stage mix, searchable company results, expandable evidence, CSV export, and a website signature. The exported file works offline; no hosting or frontend setup is needed. [Leads example](examples/report-leads.html) · [Customers example](examples/report-customers.html) (synthetic data; download and open in a browser).
+
 [Two-path guide and starter prompt](agent/START-HERE.md)
 
 ## Put the stages to work
@@ -108,7 +110,8 @@ Wayback Machine metadata can show patterns worth investigating. It cannot establ
 - `config/`: stage timing and the portable JSON schema.
 - `workflows/n8n/`: Attio, Apollo, and generic workflow imports.
 - `scripts/build-workflows.mjs`: rebuild the workflow JSON after editing its logic.
-- `skills/website-history/`: the Customers/Leads skill and CRM confirmation rules.
+- `skills/website-history/`: the Customers/Leads skill, offline HTML renderer, and CRM confirmation rules.
+- `ui/report/` (repository checkout): editable React report source; run `npm ci --prefix ui/report` and `npm run build --prefix ui/report` to rebuild bundled assets.
 - `downloads/website-history-skill.zip`: self-contained skill export; rebuild with `python3 scripts/export-skill.py`.
 - `agent/`: the two-path starting guide and technical adaptation context.
 - `tests/`: analysis, API contracts, note formatting, and workflow safeguards.

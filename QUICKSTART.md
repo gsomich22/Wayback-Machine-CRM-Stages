@@ -48,6 +48,8 @@ Create one custom multi-select field named **Website activity state** wherever t
 
 [Download the skill](downloads/website-history-skill.zip), then follow [the short two-path guide](agent/START-HERE.md). Customers uses actual close dates; Leads uses the current analysis date. Both accept a CSV attached to the conversation or a connected CRM. The assistant produces a report and asks about CRM details before proposing an upload or update. It waits for approval of that preview before writing anything.
 
+The AI path also produces a gtmgrace.com-branded HTML report. Open the file in a browser for stage filters, company evidence, and CSV export; it works offline. The [Leads example](examples/report-leads.html) and [Customers example](examples/report-customers.html) use synthetic data.
+
 The ZIP includes the engine. A capable desktop assistant can run it locally without service hosting; it still needs Node.js 22+ and internet access.
 
 ## Start the analysis service for automation
