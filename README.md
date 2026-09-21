@@ -12,7 +12,7 @@ Choose the **Website History skill** for guided research in Claude, ChatGPT, or 
 
 | Path | Result | Start here |
 |---|---|---|
-| Claude / ChatGPT / desktop AI | **Website History skill** — customer or lead research, a branded report, and optional reviewed CRM updates | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
+| Claude / ChatGPT / desktop AI | **Website History skill** — customer or lead research, an html report, and optional reviewed CRM updates | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
 | Attio | One website-activity field + a company note with an activity bar, dated findings, and an archive link | [Attio setup](docs/attio.md) |
 | Apollo | One custom account field; ready-to-import n8n workflow or local command | [Apollo setup](docs/apollo.md) |
 | Clay / another CRM | A field value you can map into your table or CRM, through HTTP, n8n, or CSV | [Portable field setup](docs/generic.md) |
@@ -39,7 +39,7 @@ A simple starting prompt:
 
 > Use the Website History skill to analyze my [customers / leads] from [this CSV / my connected CRM]. Ask me about any missing details, then create the HTML report and CSV. Show me the proposed changes before writing anything to my CRM, and wait for my approval.
 
-**You get a branded HTML report and a separate CSV download.** The report includes stage counts, searchable company results, and expandable evidence. Download and open the HTML in a browser; it works offline. In-chat export buttons provide a copyable request if the preview blocks printing or downloads.
+**You get a visual HTML report and a separate CSV download.** The report includes stage counts, searchable company results, and expandable evidence. Download and open the HTML in a browser; it works offline. In-chat export buttons provide a copyable request if the preview blocks printing or downloads.
 
 **CRM updates are optional.** Before writing, the skill asks about the workspace, matching records, fields/options, and company notes, then shows a preview for approval. Customer-at-close results stay separate from current website stages.
 
