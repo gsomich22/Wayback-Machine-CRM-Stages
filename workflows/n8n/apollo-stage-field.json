@@ -1,0 +1,325 @@
+{
+  "name": "Website History · Apollo account stage field",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "node-1",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "setting-0",
+              "name": "domain",
+              "value": "example.com",
+              "type": "string"
+            },
+            {
+              "id": "setting-1",
+              "name": "signals_base_url",
+              "value": "http://localhost:8787",
+              "type": "string"
+            },
+            {
+              "id": "setting-2",
+              "name": "apply_changes",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "setting-3",
+              "name": "account_id",
+              "value": "YOUR_APOLLO_ACCOUNT_ID",
+              "type": "string"
+            },
+            {
+              "id": "setting-4",
+              "name": "stage_field_id",
+              "value": "YOUR_ACCOUNT_CUSTOM_FIELD_ID",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-2",
+      "name": "Setup",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($input.all().length !== 1) throw new Error('Run one company at a time; use a batch-size-one loop for lists.');\nconst c={...$input.first().json};\nif (typeof c.domain !== 'string') throw new Error('Enter a company domain.');\nc.domain=c.domain.trim().toLowerCase().replace(/^https?:\\/\\//,'').replace(/^www\\./,'').split('/')[0].replace(/\\.$/,'');\nif (!/^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\\.[a-z]{2,}$/.test(c.domain)) throw new Error('Enter a public company domain.');\nif (typeof c.signals_base_url !== 'string' || !/^https?:\\/\\/[^\\s@?#]+$/.test(c.signals_base_url)) throw new Error('Enter the Signals service URL.');\nc.signals_base_url=c.signals_base_url.replace(/\\/+$/,'');\nif (typeof c.apply_changes !== 'boolean') throw new Error('apply_changes must be a boolean.');\nif (c.stage_attribute && !/^[a-z0-9_]+$/.test(c.stage_attribute)) throw new Error('Use the Attio attribute API slug for stage_attribute.');\nreturn [{json:c}];"
+      },
+      "id": "node-3",
+      "name": "Validate setup",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.signals_base_url + '/v1/signal' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}",
+        "options": {
+          "timeout": 400000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "id": "node-4",
+      "name": "Analyze website",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        300
+      ],
+      "notes": "Select your Signals Header Auth credential here. See QUICKSTART.md.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first().json;\nif (r.coverage!=='complete' || !r.website_activity_stage || r.domain!==$('Validate setup').first().json.domain) throw new Error('Incomplete or mismatched analysis; do not update the CRM.');\nreturn [{json:r}];"
+      },
+      "id": "node-5",
+      "name": "Preview signal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "apply-enabled",
+              "leftValue": "={{ $('Validate setup').first().json.apply_changes }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "node-6",
+      "name": "Apply changes?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{json:{applied:false,message:'Preview only. Review the signal, then set apply_changes to true in Setup.',signal:$('Preview signal').first().json}}];"
+      },
+      "id": "node-7",
+      "name": "Preview only",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1440,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const c=$('Validate setup').first().json, r=$('Preview signal').first().json;\nconst fieldId=String(c.stage_field_id ?? '').replace(/^account\\./,'');\nif(!/^[0-9a-f]{24}$/i.test(c.account_id ?? '') || !/^[0-9a-f]{24}$/i.test(fieldId)) throw new Error('Enter the Apollo account ID and custom account field ID. The field ID can begin with account.');\nreturn [{json:{accountId:c.account_id,body:{typed_custom_fields:{[fieldId]:r.website_activity_stage}}}}];"
+      },
+      "id": "node-8",
+      "name": "Prepare Apollo write",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://api.apollo.io/api/v1/accounts/' + $json.accountId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {
+          "timeout": 30000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "id": "node-9",
+      "name": "Update Apollo field",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1920,
+        300
+      ],
+      "notes": "Select your Apollo Header Auth credential here. See QUICKSTART.md.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "content": "## Start here\n1. Read QUICKSTART.md and docs/n8n.md.\n2. Set the domain and service URL in Setup.\n3. Connect the named Header Auth credentials to HTTP nodes.\n4. Keep apply_changes false for a preview.\n\nRun ONE company per execution. Use a batch-size-one loop for lists.\nNo credentials or customer data are included.\nAn analysis service is required; this workflow is an adapter.",
+        "height": 320,
+        "width": 450
+      },
+      "id": "node-10",
+      "name": "Read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -100
+      ]
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Setup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup": {
+      "main": [
+        [
+          {
+            "node": "Validate setup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate setup": {
+      "main": [
+        [
+          {
+            "node": "Analyze website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze website": {
+      "main": [
+        [
+          {
+            "node": "Preview signal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preview signal": {
+      "main": [
+        [
+          {
+            "node": "Apply changes?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply changes?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Apollo write",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Preview only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Apollo write": {
+      "main": [
+        [
+          {
+            "node": "Update Apollo field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 900
+  },
+  "pinData": {},
+  "tags": []
+}

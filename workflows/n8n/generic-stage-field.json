@@ -1,0 +1,203 @@
+{
+  "name": "Website History · Portable stage field",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "node-1",
+      "name": "Run manually",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "setting-0",
+              "name": "domain",
+              "value": "example.com",
+              "type": "string"
+            },
+            {
+              "id": "setting-1",
+              "name": "signals_base_url",
+              "value": "http://localhost:8787",
+              "type": "string"
+            },
+            {
+              "id": "setting-2",
+              "name": "apply_changes",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-2",
+      "name": "Setup",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($input.all().length !== 1) throw new Error('Run one company at a time; use a batch-size-one loop for lists.');\nconst c={...$input.first().json};\nif (typeof c.domain !== 'string') throw new Error('Enter a company domain.');\nc.domain=c.domain.trim().toLowerCase().replace(/^https?:\\/\\//,'').replace(/^www\\./,'').split('/')[0].replace(/\\.$/,'');\nif (!/^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?\\.[a-z]{2,}$/.test(c.domain)) throw new Error('Enter a public company domain.');\nif (typeof c.signals_base_url !== 'string' || !/^https?:\\/\\/[^\\s@?#]+$/.test(c.signals_base_url)) throw new Error('Enter the Signals service URL.');\nc.signals_base_url=c.signals_base_url.replace(/\\/+$/,'');\nif (typeof c.apply_changes !== 'boolean') throw new Error('apply_changes must be a boolean.');\nif (c.stage_attribute && !/^[a-z0-9_]+$/.test(c.stage_attribute)) throw new Error('Use the Attio attribute API slug for stage_attribute.');\nreturn [{json:c}];"
+      },
+      "id": "node-3",
+      "name": "Validate setup",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $json.signals_base_url + '/v1/signal' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({domain:$json.domain}) }}",
+        "options": {
+          "timeout": 400000,
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          },
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          }
+        }
+      },
+      "id": "node-4",
+      "name": "Analyze website",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        300
+      ],
+      "notes": "Select your Signals Header Auth credential here. See QUICKSTART.md.",
+      "notesInFlow": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first().json;\nif (r.coverage!=='complete' || !r.website_activity_stage || r.domain!==$('Validate setup').first().json.domain) throw new Error('Incomplete or mismatched analysis; do not update the CRM.');\nreturn [{json:r}];"
+      },
+      "id": "node-5",
+      "name": "Preview signal",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const r=$input.first().json; return [{json:{domain:r.domain,website_activity_state:r.website_activity_stage,analyzed_at:r.analyzed_at,archive_url:r.archive_url,coverage:r.coverage}}];"
+      },
+      "id": "node-6",
+      "name": "Stage field output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Start here\n1. Read QUICKSTART.md and docs/n8n.md.\n2. Set the domain and service URL in Setup.\n3. Connect the named Header Auth credentials to HTTP nodes.\n4. Keep apply_changes false for a preview.\n\nRun ONE company per execution. Use a batch-size-one loop for lists.\nNo credentials or customer data are included.\nAn analysis service is required; this workflow is an adapter.",
+        "height": 320,
+        "width": 450
+      },
+      "id": "node-7",
+      "name": "Read me first",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -100
+      ]
+    }
+  ],
+  "connections": {
+    "Run manually": {
+      "main": [
+        [
+          {
+            "node": "Setup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup": {
+      "main": [
+        [
+          {
+            "node": "Validate setup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate setup": {
+      "main": [
+        [
+          {
+            "node": "Analyze website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze website": {
+      "main": [
+        [
+          {
+            "node": "Preview signal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preview signal": {
+      "main": [
+        [
+          {
+            "node": "Stage field output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "executionTimeout": 900
+  },
+  "pinData": {},
+  "tags": []
+}

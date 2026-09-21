@@ -1,0 +1,24 @@
+{
+  "name": "website-history-signals",
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Dated Wayback signals for Attio, Apollo and Clay.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "website-history": "src/cli.mjs"
+  },
+  "exports": {
+    ".": "./src/analyze.mjs",
+    "./adapters": "./src/adapters.mjs",
+    "./archive": "./src/archive.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "demo": "node src/cli.mjs analyze --fixture examples/archive.json --out demo-output",
+    "start": "node src/server.mjs",
+    "analyze": "node src/cli.mjs analyze"
+  }
+}
