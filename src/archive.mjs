@@ -37,6 +37,8 @@ export async function readPages(
 ) {
   if (!Number.isInteger(maxPages) || maxPages < 1 || maxPages > 50)
     throw new Error("maxPages must be a whole number from 1 to 50");
+  if (!Number.isInteger(requestTimeoutMs) || requestTimeoutMs < 1)
+    throw new Error("requestTimeoutMs must be a positive integer");
   let payload = [],
     resume;
   const seen = new Set();

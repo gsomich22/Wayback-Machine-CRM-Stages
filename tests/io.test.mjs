@@ -418,3 +418,14 @@ test('Apollo multi-select maps stage names to option IDs and rejects missing opt
  assert.deepEqual(p.body.typed_custom_fields[APOLLO_FIELD],[option]);
  assert.throws(()=>plan({...sample,state:'Gone Quiet'},{target:'apollo',recordId:APOLLO_ID,fieldMap}),/option/);
 });
+test('archive per-request budget permits slower pages and still bounds stalled requests',async()=>{
+  const delayed=async (_url,{signal})=>{
+    await new Promise((resolve,reject)=>{const timer=setTimeout(resolve,25);signal.addEventListener('abort',()=>{clearTimeout(timer);reject(signal.reason)},{once:true});});
+    return response([['timestamp'],['20260101120000']]);
+  };
+  const allowed=await readPages({}, {fetcher:delayed,requestTimeoutMs:100,backoffMs:1});
+  assert.equal(allowed.complete,true);
+  const timedOut=await readPages({}, {fetcher:delayed,requestTimeoutMs:2,backoffMs:1});
+  assert.equal(timedOut.complete,false);assert.match(timedOut.error,/attempts/);
+  await assert.rejects(()=>readPages({}, {requestTimeoutMs:0}),/positive integer/);
+});
