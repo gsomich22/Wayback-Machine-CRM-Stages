@@ -6,7 +6,7 @@ The smallest useful integration is:
 domain → website history analysis → Website activity state
 ```
 
-Create a custom **text** field named Website activity state. Map `website_activity_state` from the output into it. In the portable signal, `website_activity_stage` is an identical alias for people who call it a stage; the two values always match.
+Create a custom **multi-select** field named Website activity state wherever the destination supports it, with the exact stage options. The generic n8n workflow includes `website_activity_states`, a one-element array ready for a multi-select mapping. Resolve labels to option IDs if your CRM requires IDs. Replace the current selection on each refresh; do not append old states. Use the scalar `website_activity_state` for text-only destinations or compatibility with existing integrations. In the portable signal, `website_activity_stage` is an identical alias for people who call it a stage; the two values always match.
 
 ## Pick the connection that fits
 
@@ -30,4 +30,4 @@ Create a custom **text** field named Website activity state. Map `website_activi
 | `coverage` | Retrieval status |
 | `review_prompt` | Reminder to inspect the evidence |
 
-All eight legacy fields are strings. You can add them later without changing the engine. Only write fields your CRM actually has. This starter contains direct writers for Attio and Apollo; other CRM mappings need your own destination node or API adapter.
+All eight legacy scalar fields remain strings for compatibility. Wrap the current state in an array when mapping an HTTP response to a multi-select destination; the generic n8n output already provides that array as `website_activity_states`. You can add them later without changing the engine. Only write fields your CRM actually has. This starter contains direct writers for Attio and Apollo; other CRM mappings need your own destination node or API adapter.

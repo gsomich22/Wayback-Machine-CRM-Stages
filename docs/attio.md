@@ -4,11 +4,13 @@ The default setup needs **one custom company field**. The note carries the evide
 
 ## Prepare your account once
 
-1. Under Attio’s company-object settings, create a **Text** attribute named **Website activity state**. Check that its API slug is `website_activity_state`. If you use another slug, enter it in n8n’s Setup node or your local field-map file.
+1. Under Attio’s company-object settings, create a **Multi-select** (multi-select dropdown) attribute named **Website activity state**. Add every exact option in [the stage list](how-stages-work.md). Check that its API slug is `website_activity_state`. If you use another slug, enter it in n8n’s Setup node or your local field-map file.
 2. Create an API token with `record_permission:read-write`, `object_configuration:read`, and `note:read-write` scopes.
 3. Choose an existing test company with its domain filled in.
 
-For colored stage options, you can instead use a **single Select** attribute and create every exact option in [the stage list](how-stages-work.md). Attio accepts existing select titles as strings; missing options cause an error. Text is the quickest setup. Do not use a sales pipeline Status attribute for this field.
+The stage is always written as a one-element array, such as `["Fresh Rebuild"]`, using Attio’s `PUT` record-update endpoint. This replaces previous selections rather than accumulating old states. The classifier still chooses one current state; the multi-select field provides the dropdown presentation and leaves room for future expansion. Missing options cause an error. Do not use a sales pipeline Status attribute for this field.
+
+**If you already created a Text or single-select field:** create a new Multi-select attribute with the same stage options, then point `stage_attribute` (n8n) or the field map (local command) at its API slug. Keep the old field until you have verified the new one. This code change does not convert or delete fields in your account.
 
 ## Option A: n8n
 
@@ -70,4 +72,4 @@ Field and note updates are separate API calls. If the field succeeds but the not
 
 `examples/attio-fields.json` maps all eight legacy fields. Create only the fields you keep in that map. The local adapter omits empty optional values, which means old values in those fields remain; the managed note always shows the current result. The one-field setup avoids this ambiguity.
 
-References: [Attio record updates](https://docs.attio.com/rest-api/endpoint-reference/records/update-a-record-append-multiselect-values), [select values](https://docs.attio.com/rest-api/attribute-types/attribute-types-select), [list notes](https://docs.attio.com/rest-api/endpoint-reference/notes/list-notes), [create a note](https://docs.attio.com/rest-api/endpoint-reference/notes/create-a-note), [update a note](https://docs.attio.com/rest-api/endpoint-reference/notes/update-a-note).
+References: [Attio record updates](https://docs.attio.com/rest-api/endpoint-reference/records/update-a-record-overwrite-multiselect-values), [select values](https://docs.attio.com/rest-api/attribute-types/attribute-types-select), [list notes](https://docs.attio.com/rest-api/endpoint-reference/notes/list-notes), [create a note](https://docs.attio.com/rest-api/endpoint-reference/notes/create-a-note), [update a note](https://docs.attio.com/rest-api/endpoint-reference/notes/update-a-note).

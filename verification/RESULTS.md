@@ -1,3 +1,10 @@
+## Multi-select update verification
+
+- 35 tests passed on Node.js 22 and 26, including replacement of prior Attio selections, custom attribute mapping, Apollo option-ID mapping, missing-option rejection, and workflow defaults.
+- Offline demo passed. All JSON parsed; local Markdown links resolved.
+- The user-edited example note, HTML preview, and note formatter are unchanged from the latest GitHub version.
+- No credentialed CRM writes were made; account-specific multi-select compatibility remains a live setup check.
+
 # Verification · September 21, 2026
 
 - 32 automated tests passed under Node.js 22 and Node.js 26: analysis, archive pagination/retries, CRM request contracts, local HTTP endpoints, note formatting, and workflow Code-node safeguards.

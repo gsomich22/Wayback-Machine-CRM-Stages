@@ -4,7 +4,7 @@
 
 Give it a domain. Get a website-activity stage, dated evidence, and a readable summary of what changed in its public archive history. Use the stage to organize accounts, spot patterns across customers, and decide which websites deserve a closer look.
 
-For **Attio**, the starter writes the stage and a formatted company note. For **Apollo, Clay, or another CRM**, start with one custom field: **Website activity state**.
+For **Attio**, the starter writes the stage to a **Multi-select** dropdown and creates a formatted company note. For **Apollo, Clay, or another CRM**, start with one custom field: **Website activity state**, using multi-select wherever supported. Apollo’s writer maps stage names to your picklist option IDs; text is a legacy fallback.
 
 You do not need to understand the code to understand the output. You will need someone comfortable connecting a workflow or running a small service to automate it.
 
