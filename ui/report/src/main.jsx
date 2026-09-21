@@ -70,7 +70,7 @@ function App() {
         <section className="print-only"><h2>All results</h2>{report.rows.map((r,i)=><article key={i}><h3>{r.company} — {r.stage}</h3><p>{r.domain} · {customer?'Closed':'As of'} {r.date || 'Date unavailable'} · Retrieval: {r.archive_coverage}</p><p>{r.error || r.evidence_summary}</p>{r.archive_url&&<p>{r.archive_url}</p>}</article>)}</section>
         <aside className="method-note"><span className="note-symbol" aria-hidden="true">↳</span><div><strong>Context is the point.</strong><p>Website stages describe archive patterns, not buying intent or verified redesign dates. {customer ? 'Customer patterns are retrospective; this cohort alone cannot predict who will buy.' : 'Review the evidence before choosing an outreach angle.'} No Strong Signal and Insufficient History remain visible in the results. This report does not update your CRM.</p></div></aside>
       </main>
-      <footer className="signature"><div><span className="eyebrow">A little research. A better starting point.</span><p>Made with perspective.</p></div><a href="https://www.gtmgrace.com/" target="_blank" rel="noopener noreferrer"><span>by Grace</span><strong>gtmgrace.com <b aria-hidden="true">↗</b></strong></a></footer>
+      <footer className="signature"><div><span className="eyebrow">A little research. A better starting point.</span><p>Made with perspective.</p></div><a href="https://www.gtmgrace.com/" target="_blank" rel="noopener noreferrer"><strong>gtmgrace.com <b aria-hidden="true">↗</b></strong></a></footer>
     </div>
   </>;
 }
