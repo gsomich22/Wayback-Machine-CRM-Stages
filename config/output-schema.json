@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Website History Signal",
+  "description": "Portable output from signalObject and /v1/signal. The two website activity keys are identical aliases. Coverage must be complete before writing to a CRM.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "engine_version",
+    "domain",
+    "website_activity_stage",
+    "website_activity_state",
+    "last_signal",
+    "signal_start",
+    "signal_end",
+    "analyzed_at",
+    "archive_url",
+    "coverage",
+    "review_prompt",
+    "confidence",
+    "confidence_basis",
+    "summary",
+    "detected_signals",
+    "recommended_outreach_angle",
+    "note_title",
+    "note_markdown",
+    "stage_rules"
+  ],
+  "properties": {
+    "engine_version": {
+      "type": "string"
+    },
+    "domain": {
+      "type": "string"
+    },
+    "website_activity_stage": {
+      "enum": [
+        "Fresh Rebuild",
+        "Stale After Rebuild",
+        "Actively Iterating",
+        "Expanding",
+        "Streamlining",
+        "Long Quiet Stretch",
+        "Gone Quiet",
+        "No Strong Signal",
+        "Insufficient History",
+        "Unknown"
+      ]
+    },
+    "website_activity_state": {
+      "enum": [
+        "Fresh Rebuild",
+        "Stale After Rebuild",
+        "Actively Iterating",
+        "Expanding",
+        "Streamlining",
+        "Long Quiet Stretch",
+        "Gone Quiet",
+        "No Strong Signal",
+        "Insufficient History",
+        "Unknown"
+      ]
+    },
+    "last_signal": {
+      "type": "string"
+    },
+    "signal_start": {
+      "type": "string"
+    },
+    "signal_end": {
+      "type": "string"
+    },
+    "analyzed_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "archive_url": {
+      "type": "string"
+    },
+    "coverage": {
+      "enum": [
+        "complete",
+        "partial",
+        "unavailable"
+      ]
+    },
+    "review_prompt": {
+      "type": "string"
+    },
+    "confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "confidence_basis": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "recommended_outreach_angle": {
+      "type": "string"
+    },
+    "note_title": {
+      "type": "string"
+    },
+    "note_markdown": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "detected_signals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "label",
+          "start",
+          "end",
+          "strength",
+          "reason"
+        ],
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "strength": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stage_rules": {
+      "type": "object",
+      "required": [
+        "freshRebuildMaxAgeMonths",
+        "staleRebuildMaxAgeMonths",
+        "otherSignalExpiryMonths"
+      ],
+      "properties": {
+        "freshRebuildMaxAgeMonths": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "staleRebuildMaxAgeMonths": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "otherSignalExpiryMonths": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

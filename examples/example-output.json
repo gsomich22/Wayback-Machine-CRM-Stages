@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "engine_version": "0.3.0",
+  "domain": "northline.example",
+  "website_activity_stage": "Fresh Rebuild",
+  "website_activity_state": "Fresh Rebuild",
+  "last_signal": "Major Rebuild Signal",
+  "signal_start": "2026-04",
+  "signal_end": "2026-06",
+  "analyzed_at": "2026-09-11",
+  "archive_url": "https://web.archive.org/web/*/northline.example",
+  "coverage": "complete",
+  "review_prompt": "Compare the dated archive snapshots with the current website before choosing outreach language.",
+  "confidence": "high",
+  "confidence_basis": "Heuristic evidence strength, not a probability of a redesign or purchase.",
+  "summary": "Fresh Rebuild. Latest finding: Major Rebuild Signal, 2026-04 to 2026-06. A change in archived response length persisted for two later months; inspect the snapshots to confirm a redesign.",
+  "detected_signals": [
+    {
+      "type": "rebuild",
+      "label": "Major Rebuild Signal",
+      "start": "2026-04",
+      "end": "2026-06",
+      "strength": "strong",
+      "reason": "A change in archived response length persisted for two later months; inspect the snapshots to confirm a redesign."
+    }
+  ],
+  "recommended_outreach_angle": "Compare the dated archive snapshots with the current website before choosing outreach language.",
+  "note_title": "Website History \u00b7 northline.example",
+  "note_markdown": "[northline.example](https://northline.example) \u00b7 **Fresh Rebuild**\n\n\u00a0\n\n\u00a0\n\n### \u29d7 Wayback Machine \u29d7\n\n### 2026\n\u2585\u2585\u2585\u2588\u2585\u2585\n\n\u25c8 **April 2026 to June 2026** \u00b7 _Major Rebuild Signal_\n\u2502   A change in archived response length persisted for two later months; inspect the snapshots to confirm a redesign.\n\u2502   strong heuristic evidence.\n\n_[link to wayback machine \u2192](https://web.archive.org/web/*/northline.example)_\n\n\u00a0\n\n_______________________________________________________________________________________________________________\n\n\u00a0\n\n\u00a0\n\nAnalyzed: 2026-09-11 \u00b7 Coverage: complete\n\nHomepage coverage: 6 months. Inventory coverage: 0 months.\n\nCompare the dated archive snapshots with the current website before choosing outreach language.\n\nThe bar summarizes archived homepage activity; blank periods mean missing or thin evidence. Archive metadata does not prove a visual redesign or buying intent.\n\n*Managed by Website History Signals.*",
+  "stage_rules": {
+    "freshRebuildMaxAgeMonths": 6,
+    "staleRebuildMaxAgeMonths": 42,
+    "otherSignalExpiryMonths": 12
+  }
+}

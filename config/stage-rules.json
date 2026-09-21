@@ -1,0 +1,5 @@
+{
+  "freshRebuildMaxAgeMonths": 6,
+  "staleRebuildMaxAgeMonths": 42,
+  "otherSignalExpiryMonths": 12
+}

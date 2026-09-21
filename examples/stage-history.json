@@ -1,0 +1,78 @@
+{
+  "label": "Synthetic CRM history for illustration; not client results",
+  "asOf": "2026-09-01",
+  "companies": [
+    {
+      "name": "Northline Goods",
+      "domain": "northline.example",
+      "stages": [
+        {
+          "since": "2026-01-01",
+          "state": "Long Quiet Stretch"
+        },
+        {
+          "since": "2026-03-01",
+          "state": "Fresh Rebuild"
+        },
+        {
+          "since": "2026-06-01",
+          "state": "Actively Iterating"
+        }
+      ],
+      "engagedOn": "2026-05-15"
+    },
+    {
+      "name": "Bloom Skincare",
+      "domain": "bloom.example",
+      "stages": [
+        {
+          "since": "2026-01-01",
+          "state": "Actively Iterating"
+        },
+        {
+          "since": "2026-04-01",
+          "state": "Fresh Rebuild"
+        },
+        {
+          "since": "2026-07-01",
+          "state": "Expanding"
+        }
+      ],
+      "engagedOn": "2026-08-05"
+    },
+    {
+      "name": "Ridge Outfitters",
+      "domain": "ridge.example",
+      "stages": [
+        {
+          "since": "2026-01-01",
+          "state": "Gone Quiet"
+        },
+        {
+          "since": "2026-05-01",
+          "state": "Fresh Rebuild"
+        }
+      ],
+      "engagedOn": "2026-06-15"
+    },
+    {
+      "name": "Form & Field",
+      "domain": "form.example",
+      "stages": [
+        {
+          "since": "2026-01-01",
+          "state": "Expanding"
+        },
+        {
+          "since": "2026-02-15",
+          "state": "Actively Iterating"
+        },
+        {
+          "since": "2026-07-01",
+          "state": "Fresh Rebuild"
+        }
+      ],
+      "engagedOn": "2026-03-15"
+    }
+  ]
+}

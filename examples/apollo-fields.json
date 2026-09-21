@@ -1,0 +1,10 @@
+{
+  "website_activity_state": "replace_with_website_activity_state_field_id",
+  "last_signal": "replace_with_last_signal_field_id",
+  "signal_start": "replace_with_signal_start_field_id",
+  "signal_end": "replace_with_signal_end_field_id",
+  "analyzed_at": "replace_with_analyzed_at_field_id",
+  "archive_url": "replace_with_archive_url_field_id",
+  "coverage": "replace_with_coverage_field_id",
+  "review_prompt": "replace_with_review_prompt_field_id"
+}

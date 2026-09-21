@@ -1,0 +1,10 @@
+{
+  "website_activity_state": "website_activity_state",
+  "last_signal": "last_signal",
+  "signal_start": "signal_start",
+  "signal_end": "signal_end",
+  "analyzed_at": "analyzed_at",
+  "archive_url": "archive_url",
+  "coverage": "coverage",
+  "review_prompt": "review_prompt"
+}
