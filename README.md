@@ -15,7 +15,7 @@ You do not need to understand the code to understand the output. You will need s
 | Attio | One website-activity field + a company note with an activity bar, dated findings, and an archive link | [Attio setup](docs/attio.md) |
 | Apollo | One custom account field; ready-to-import n8n workflow or local command | [Apollo setup](docs/apollo.md) |
 | Clay / another CRM | A field value you can map into your table or CRM, through HTTP, n8n, or CSV | [Portable field setup](docs/generic.md) |
-| Claude / ChatGPT | A guide and copyable prompt to understand the package and adapt it to your tools | [Start with an AI assistant](agent/START-HERE.md) |
+| Claude / ChatGPT / desktop AI | Downloadable skill: Customers at close or Leads today, from a CSV or connected CRM | [Download skill](downloads/website-history-skill.zip) · [Start here](agent/START-HERE.md) |
 | Local preview | Sample JSON, CSV, and the Attio note, with no account connection | [Quickstart](QUICKSTART.md) |
 
 The starter is free, MIT-licensed source code. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
@@ -79,6 +79,14 @@ Import a workflow from [workflows/n8n](workflows/n8n), connect your own credenti
 
 The workflows call the included analysis service. **n8n Cloud and Clay need a reachable service URL; importing a workflow does not host the engine.** A local command is the fastest path if you do not want hosting. The [quickstart](QUICKSTART.md) separates local use from automation setup.
 
+## Use it with your AI assistant
+
+[Download the Customers & Leads skill](downloads/website-history-skill.zip). Give your assistant the skill and choose **Customers** (website stages at close) or **Leads** (current stages). Attach a CSV directly to that conversation, or use a connected CRM. There is no separate upload site.
+
+The assistant asks about the relevant records and fields, runs the included engine where code execution and internet access are available, and returns a report. If you want results in your CRM, it first resolves the workspace, record matching, field/options, and note handling, then shows the proposed changes and waits for your approval. Historical customer results stay separate from current website states.
+
+[Two-path guide and starter prompt](agent/START-HERE.md)
+
 ## Put the stages to work
 
 Start with a few companies you already know. Compare the findings with the actual websites and adjust the timing rules to fit your research.
@@ -100,7 +108,9 @@ Wayback Machine metadata can show patterns worth investigating. It cannot establ
 - `config/`: stage timing and the portable JSON schema.
 - `workflows/n8n/`: Attio, Apollo, and generic workflow imports.
 - `scripts/build-workflows.mjs`: rebuild the workflow JSON after editing its logic.
-- `agent/`: context and adaptation prompts for an AI assistant.
+- `skills/website-history/`: the Customers/Leads skill and CRM confirmation rules.
+- `downloads/website-history-skill.zip`: self-contained skill export; rebuild with `python3 scripts/export-skill.py`.
+- `agent/`: the two-path starting guide and technical adaptation context.
 - `tests/`: analysis, API contracts, note formatting, and workflow safeguards.
 
 Run `npm test` before sharing changes. This release has local automated verification; an import-and-execute check in your n8n instance and a live write to a test CRM company remain setup checks. No live CRM records were changed to build this package.
