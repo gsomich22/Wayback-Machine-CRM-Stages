@@ -14,8 +14,8 @@ Create a workflow, open its menu, and choose **Import from File**. Select one:
 
 | File | What happens after analysis |
 |---|---|
-| `attio-website-history-note.json` | Finds an existing company by domain, updates one field, and creates/updates its managed note |
-| `apollo-stage-field.json` | Updates one custom field on the account ID you supply |
+| `attio-website-history-note.json` (Attio kit) | Finds an existing company by domain, updates one field, and creates/updates its managed note |
+| `apollo-stage-field.json` (Apollo kit) | Updates one custom field on the account ID you supply |
 | `generic-stage-field.json` | Returns portable field output; you connect your destination afterward |
 
 All three start with a manual trigger, include a Setup node, and are inactive. No credential IDs, pinned customer data, instance IDs, or account tokens are included.
@@ -58,7 +58,7 @@ For the generic path, connect **Stage field output** to your CRM’s Update Reco
 
 ## For maintainers
 
-Edit `scripts/build-workflows.mjs`, then run:
+Kit buyers: edit `scripts/build-workflows.mjs` in the kit, then run:
 
 ```sh
 node scripts/build-workflows.mjs

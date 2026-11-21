@@ -7,7 +7,7 @@
 | Change the Attio note appearance | `src/note.mjs`; inspect example output and Attio rendering |
 | Rename a destination field | n8n Setup or a copied local field-map JSON |
 | Add a CRM | Start with the generic workflow; add record lookup and one field update |
-| Change workflow logic | `scripts/build-workflows.mjs`, then rebuild the JSON imports |
+| Change workflow logic | `scripts/build-workflows.mjs` (CRM kits), then rebuild the JSON imports |
 | Change the portable JSON contract | `src/output.mjs` and `config/output-schema.json`; preserve compatibility or version it |
 
 Do not rename internal stage values casually: filters, reports, and select options may depend on them. A field’s display label can be “Website Activity Stage” while its API key remains `website_activity_state`.

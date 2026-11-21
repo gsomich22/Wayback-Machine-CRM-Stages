@@ -4,18 +4,18 @@
 
 Give it a domain. Get a website-activity stage, dated evidence, and a readable summary of what changed in its public archive history. Use the stage to organize accounts, spot patterns across customers, and decide which websites deserve a closer look.
 
-For **Attio**, the starter writes the stage to a **Multi-select** dropdown and creates a formatted company note. For **Apollo, Clay, or another CRM**, start with one custom field: **Website activity state**, using multi-select wherever supported. Apollo’s writer maps stage names to your picklist option IDs; text is a legacy fallback.
+Every run gives you a branded HTML report and a CRM import CSV (company name, domain, website stage, date refreshed). Add two fields to your CRM's company records once, **Website Stage** and **Website Stage Refreshed**, then import the CSV matched on domain.
 
-Choose the **Website History skill** for guided research in Claude, ChatGPT, or a desktop AI assistant. Choose a CRM workflow for ongoing automation. You can preview the results before connecting any accounts.
+Writing stages straight into Attio, Apollo or Clay (no import step), archived before/after images, and scheduled automation are part of the **CRM kits** on [Agensi](https://www.agensi.io). The docs below explain how the field mapping works if you'd rather build your own writer.
 
 ## What you get
 
 | Path | Result | Start here |
 |---|---|---|
-| Claude / ChatGPT / desktop AI | **Website History skill** — customer or lead research, an html report, and optional reviewed CRM updates | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
-| Attio | One website-activity field + a company note with an activity bar, dated findings, and an archive link | [Attio setup](docs/attio.md) |
-| Apollo | One custom account field; ready-to-import n8n workflow or local command | [Apollo setup](docs/apollo.md) |
-| Clay / another CRM | A field value you can map into your table or CRM, through HTTP, n8n, or CSV | [Portable field setup](docs/generic.md) |
+| Claude / ChatGPT / desktop AI | **Website History skill**: customer or lead research, a branded HTML report, and a CRM import CSV | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
+| Any CRM | Two fields plus a CSV import matched on domain | [Field setup](skills/website-history/references/crm-field-setup.md) |
+| Clay / HTTP / n8n | A portable field value you can map anywhere | [Portable field setup](docs/generic.md) |
+| Build your own writer | How the Attio and Apollo field mapping works | [Attio](docs/attio.md) · [Apollo](docs/apollo.md) |
 | Local preview | Sample JSON, CSV, and the Attio note, with no account connection | [Quickstart](QUICKSTART.md) |
 
 The starter’s original source code is free and MIT-licensed. The optional report interface includes React Bits under its bundled third-party license. Your n8n plan, CRM/API access, and any hosting are separate. No paid enrichment provider or AI API is required by the analysis engine.
@@ -102,9 +102,9 @@ The `analysis` folder will contain the portable signal, full analysis, formatted
 
 **The simplest CRM setup is one field.** The other seven fields from the earlier package are optional.
 
-Import a workflow from [workflows/n8n](workflows/n8n), connect your own credentials, and run it with `apply_changes` set to `false` first. Attio and Apollo writes are enabled when you change that setting to `true`. The generic workflow stops at portable field output, ready for your own destination node.
+Import the CSV from any run into your CRM, matched on domain. For automation, the [generic n8n workflow](workflows/n8n/generic-stage-field.json) calls the included analysis service and stops at portable field output, ready for your own destination node. **n8n Cloud and Clay need a reachable service URL; importing a workflow does not host the engine.**
 
-The workflows call the included analysis service. **n8n Cloud and Clay need a reachable service URL; importing a workflow does not host the engine.** A local command is the fastest path if you do not want hosting. The [quickstart](QUICKSTART.md) separates local use from automation setup.
+Direct Attio and Apollo writers ship with the CRM kits.
 
 ## Put the stages to work
 
@@ -123,14 +123,13 @@ Wayback Machine metadata can show patterns worth investigating. It cannot establ
 ## For people who want to tinker
 
 - `src/analyze.mjs`: deterministic analysis; `src/archive.mjs`: public archive retrieval.
-- `src/note.mjs`: Attio formatting; `src/output.mjs`: portable signal object.
+- `src/note.mjs`: note formatting; `src/fields.mjs`: portable field values and CSV; `src/output.mjs`: portable signal object.
 - `config/`: stage timing and the portable JSON schema.
-- `workflows/n8n/`: Attio, Apollo, and generic workflow imports.
-- `scripts/build-workflows.mjs`: rebuild the workflow JSON after editing its logic.
-- `skills/website-history/`: the Customers/Leads skill, offline HTML renderer, and CRM confirmation rules.
+- `workflows/n8n/generic-stage-field.json`: portable-output workflow.
+- `skills/website-history/`: the Customers/Leads skill, offline HTML renderer, and CRM field setup guide.
 - `ui/report/` (repository checkout): editable React report source; run `npm ci --prefix ui/report` and `npm run build --prefix ui/report` to rebuild bundled assets.
 - `downloads/website-history-skill.zip`: self-contained skill export; rebuild with `python3 scripts/export-skill.py`.
 - `agent/`: the two-path starting guide and technical adaptation context.
-- `tests/`: analysis, API contracts, note formatting, and workflow safeguards.
+- `tests/`: analysis, API contracts, note formatting, and the report.
 
-Run `npm test` before sharing changes. This release has local automated verification; an import-and-execute check in your n8n instance and a live write to a test CRM company remain setup checks. No live CRM records were changed to build this package.
+Run `npm test` before sharing changes.

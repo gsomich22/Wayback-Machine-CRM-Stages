@@ -5,7 +5,12 @@ import { parseArgs } from "node:util";
 import { signalObject } from "./output.mjs";
 import { analyze } from "./analyze.mjs";
 import { analyzeDomain, DEFAULTS } from "./archive.mjs";
-import { plan, applyPlan, fields, renderNote, toCSV } from "./adapters.mjs";
+import { fields, renderNote, toCSV } from "./fields.mjs";
+// CRM writing ships with the CRM kits. The free skill analyzes and exports only.
+async function writers() {
+  try { return await import("./adapters.mjs"); }
+  catch { throw new Error("Writing straight to a CRM is part of the CRM kits. This version exports a CSV you can import instead."); }
+}
 import { summarizeHistory } from "./history.mjs";
 async function read(p, what) {
   let raw;
@@ -124,6 +129,7 @@ try {
       );
     const r = await read(v.input, "analysis"),
       mapped = await read(v.map, "field map");
+    const { plan, applyPlan } = await writers();
     const op = plan(r, {
       target: v.target,
       recordId: v["record-id"],

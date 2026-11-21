@@ -3,7 +3,7 @@ import { timingSafeEqual } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { analyzeDomain, DEFAULTS } from "./archive.mjs";
 import { signalObject } from "./output.mjs";
-import { fields } from "./adapters.mjs";
+import { fields } from "./fields.mjs";
 import { normalizeDomain } from "./analyze.mjs";
 export function makeServer({
   token,

@@ -23,6 +23,6 @@ The note title and ownership marker allow repeat updates. Do not overwrite a not
 
 ## Implementation
 
-Node.js 22+, built-in modules only. Edit scripts/build-workflows.mjs and regenerate the imports if their logic changes. Run npm test and the offline demo. State separately whether you tested API mocks, imported into actual n8n, or performed a credentialed CRM write.
+Node.js 22+, built-in modules only. With a CRM kit, edit scripts/build-workflows.mjs and regenerate the imports if their logic changes. Run npm test and the offline demo. State separately whether you tested API mocks, imported into actual n8n, or performed a credentialed CRM write.
 
 A normal chat may lack filesystem, terminal, network, or CRM tools. Explain those constraints instead of claiming you ran the workflow.

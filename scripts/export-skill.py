@@ -13,12 +13,17 @@ def export():
     files = [(p, Path("website-history") / p.relative_to(SKILL))
              for p in sorted(SKILL.rglob("*")) if p.is_file()]
     engine = []
+    # Free skill: analysis, report and CSV export only. CRM writers, n8n workflows
+    # and CRM-specific guides ship with the paid kits (see kits/).
+    kit_only = {"adapters.mjs", "io.test.mjs", "workflows.test.mjs",
+                "attio.md", "apollo.md", "clay.md", "n8n.md", "release.md",
+                "apollo-fields.json", "apollo-stage-only.json", "apollo-stage-options.json",
+                "attio-fields.json", "attio-stage-only.json", "attio-note-preview.html",
+                "report-customers.html", "report-leads.html", "report-customers.csv", "report-leads.csv"}
     for folder, pattern in [("src", "*.mjs"), ("config", "*.json"),
-                            ("examples", "*"), ("docs", "*.md"),
-                            ("agent", "*.md"), ("tests", "*.mjs"), ("verification", "*.md"),
-                            ("workflows/n8n", "*.json")]:
-        engine.extend(p for p in (ROOT / folder).glob(pattern) if p.is_file())
-    engine += [ROOT / name for name in ["README.md", "QUICKSTART.md", "LICENSE", "package.json", ".env.example", "scripts/build-workflows.mjs"]]
+                            ("examples", "*"), ("docs", "*.md"), ("tests", "*.mjs")]:
+        engine.extend(p for p in (ROOT / folder).glob(pattern) if p.is_file() and p.name not in kit_only)
+    engine += [ROOT / name for name in ["LICENSE", "package.json"]]
     files += [(p, Path("website-history/scripts/engine") / p.relative_to(ROOT)) for p in engine]
     targets = {source.resolve(): target for source, target in files}
     # A bundled guide links to the installed instructions instead of a recursive download.

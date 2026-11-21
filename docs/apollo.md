@@ -17,7 +17,7 @@ Find the existing account’s 24-character ID in its URL or the accounts search 
 
 ## n8n
 
-Import `workflows/n8n/apollo-stage-field.json` and follow [n8n setup](n8n.md). Set the domain, service URL, account ID, and field ID in Setup. Keep `stage_field_type` as `multiselect`. Paste your completed label-to-option-ID JSON into `stage_option_ids`. Connect Signals and Apollo credentials. Preview with `apply_changes: false`; then set it to `true` to update the account field.
+Import the Apollo workflow (included with the Apollo CRM kit) and follow [n8n setup](n8n.md). Set the domain, service URL, account ID, and field ID in Setup. Keep `stage_field_type` as `multiselect`. Paste your completed label-to-option-ID JSON into `stage_option_ids`. Connect Signals and Apollo credentials. Preview with `apply_changes: false`; then set it to `true` to update the account field.
 
 ## Local route
 

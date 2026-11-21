@@ -2,7 +2,7 @@
   "name": "website-history-signals",
   "version": "0.3.0",
   "type": "module",
-  "description": "Dated Wayback signals for Attio, Apollo and Clay.",
+  "description": "Dated Wayback website stages, a branded report and a CRM import CSV.",
   "license": "MIT",
   "engines": {
     "node": ">=22"
@@ -12,7 +12,6 @@
   },
   "exports": {
     ".": "./src/analyze.mjs",
-    "./adapters": "./src/adapters.mjs",
     "./archive": "./src/archive.mjs"
   },
   "scripts": {

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
 const source = new URL('../skills/website-history/scripts/',import.meta.url);
 const scripts = existsSync(source) ? source : new URL('../../',import.meta.url);
-const {normalizeReport,summarize,toCsv} = await import(new URL('report-data.mjs',scripts));
+const {normalizeReport,summarize,toCsv,toImportCsv} = await import(new URL('report-data.mjs',scripts));
 const {renderReport} = await import(new URL('render-report.mjs',scripts));
 const row = {input_id:'1',company:'Example',domain:'example.com',analyzed_at:'2026-09-21',website_activity_state:'Fresh Rebuild',archive_coverage:'complete',resolution:'analyzed',evidence_summary:'Observed change.',archive_url:'https://web.archive.org/web/*/example.com'};
 const base = {mode:'leads',generated_at:'2026-09-21',rows:[row]};
@@ -30,8 +30,11 @@ test('HTML data cannot close its script or create markup; archive links are allo
   const input={...base,title:attack,rows:[{...row,company:attack,archive_url:'javascript:alert(1)'}]};
   const html=renderReport(input);
   assert.ok(!html.includes(attack));assert.ok(html.includes('\\u003c/script>'));
-  assert.equal(normalizeReport(input).rows[0].archive_url,'');
-  assert.equal(normalizeReport({...base,rows:[{...row,archive_url:'https://web.archive.org.evil.test/'}]}).rows[0].archive_url,'');
+  // A rejected link falls back to the archive's own page for the domain, never the supplied URL.
+  for (const bad of ['javascript:alert(1)','https://web.archive.org.evil.test/']) {
+    const link=normalizeReport({...base,rows:[{...row,archive_url:bad}]}).rows[0].archive_url;
+    assert.ok(link==='' || link.startsWith('https://web.archive.org/web/'), link);
+  }
   assert.ok(html.includes('https://www.gtmgrace.com/'));
   assert.ok(!/<script[^>]+src=/.test(html));assert.ok(!/<link[^>]+href=/.test(html));
 });
@@ -70,6 +73,6 @@ test('report command creates a matching CSV attachment beside its HTML',()=>{
     const result=spawnSync(process.execPath,[fileURLToPath(new URL('render-report.mjs',scripts)),join(dir,'input.json'),join(dir,'result.html')],{encoding:'utf8'});
     assert.equal(result.status,0,result.stderr);
     assert.ok(readFileSync(join(dir,'result.html'),'utf8').includes('https://www.gtmgrace.com/'));
-    assert.equal(readFileSync(join(dir,'result.csv'),'utf8'),toCsv(normalizeReport(base)));
+    assert.equal(readFileSync(join(dir,'result.csv'),'utf8'),toImportCsv(normalizeReport(base)));
   } finally {rmSync(dir,{recursive:true,force:true});}
 });

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import { once } from 'node:events';
 import { analyze, classify } from '../src/analyze.mjs';
-import { renderNote } from '../src/adapters.mjs';
+import { renderNote } from '../src/fields.mjs';
 import { makeServer } from '../src/server.mjs';
 const fixture = JSON.parse(await fs.readFile(new URL('../examples/archive.json', import.meta.url)));
 test('starter rebuild window is configurable without changing the detected evidence', () => {

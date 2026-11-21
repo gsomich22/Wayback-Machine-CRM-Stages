@@ -14,7 +14,7 @@ The stage is always written as a one-element array, such as `["Fresh Rebuild"]`,
 
 ## Option A: n8n
 
-Follow [the n8n guide](n8n.md) and import `workflows/n8n/attio-website-history-note.json`.
+Follow [the n8n guide](n8n.md) and import the Attio workflow (included with the Attio CRM kit).
 
 Set the company domain, the analysis-service URL, and the attribute slug in **Setup**. Connect a Signals Header Auth credential to **Analyze website**, and an Attio Header Auth credential to all four Attio HTTP nodes. Leave `apply_changes: false` for the preview.
 

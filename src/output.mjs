@@ -1,4 +1,4 @@
-import { fields, renderNote, noteTitle } from './adapters.mjs';
+import { fields, renderNote, noteTitle } from './fields.mjs';
 export function signalObject(r) {
   return {
     schema_version: 1,

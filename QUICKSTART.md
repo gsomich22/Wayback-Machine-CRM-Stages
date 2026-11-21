@@ -38,7 +38,7 @@ You need an existing company in Attio, one custom company field, and an Attio AP
 
 **Local route — no hosting:** follow [Attio setup](docs/attio.md), preview the saved analysis, then apply it. You supply the company’s record ID.
 
-**n8n route:** start the analysis service below, import `workflows/n8n/attio-website-history-note.json`, and follow [n8n setup](docs/n8n.md). You supply a domain; the workflow finds exactly one existing Attio company. Credentials stay in n8n.
+**n8n route:** start the analysis service below, import the Attio workflow (included with the Attio CRM kit), and follow [n8n setup](docs/n8n.md). You supply a domain; the workflow finds exactly one existing Attio company. Credentials stay in n8n.
 
 ## 4. I want a stage in Apollo, Clay, or another CRM
 
