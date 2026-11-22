@@ -1,5 +1,7 @@
 # CRM field setup and import
 
+Full guides for 20+ CRMs, tables, email and outbound tools: https://www.gtmgrace.com/docs/website-history/
+
 Two fields on the Company object (Account in Apollo and Salesforce):
 
 - **Website Stage**: single select with the 10 stage options
