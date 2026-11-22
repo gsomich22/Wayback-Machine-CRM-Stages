@@ -6,7 +6,7 @@ Give it a domain. Get a website-activity stage, dated evidence, and a readable s
 
 Every run gives you a branded HTML report and a CRM import CSV (company name, domain, website stage, date refreshed). Add two fields to your CRM's company records once, **Website Stage** and **Website Stage Refreshed**, then import the CSV matched on domain.
 
-Writing stages straight into Attio, Apollo or Clay (no import step), archived before/after images, and scheduled automation are part of the **CRM kits** on [Agensi](https://www.agensi.io). The docs below explain how the field mapping works if you'd rather build your own writer.
+If your CRM is connected to your AI assistant, the skill can also pull the company list from it and, after you approve a preview, write the two fields back. Automatic stamping of new leads (webhooks), archived before/after images, and done-for-you field setup are part of the **CRM kits** on [Agensi](https://www.agensi.io). The docs below explain how the field mapping works if you'd rather build your own writer.
 
 ## What you get
 
