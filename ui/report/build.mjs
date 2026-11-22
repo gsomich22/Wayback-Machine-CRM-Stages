@@ -1,7 +1,7 @@
 import {build} from 'esbuild';
 import {fileURLToPath} from 'node:url';
 import {readFileSync, writeFileSync} from 'node:fs';
-const target = new URL('../../skills/website-history/assets/report/', import.meta.url);
+const target = new URL('../../skills/website-history-lite/assets/report/', import.meta.url);
 await build({absWorkingDir:fileURLToPath(new URL('.',import.meta.url)), entryPoints:['src/main.jsx'], bundle:true, minify:true, format:'iife', jsx:'automatic', target:['es2020'], outfile:fileURLToPath(new URL('report.js',target)), define:{'process.env.NODE_ENV':'"production"'}, legalComments:'inline', loader:{'.woff2':'dataurl'}});
 const license = readFileSync(new URL('REACT-BITS-LICENSE.txt',target),'utf8') + '\n' + readFileSync(new URL('THIRD-PARTY-NOTICES.txt',target),'utf8');
 const jsFile = new URL('report.js',target);

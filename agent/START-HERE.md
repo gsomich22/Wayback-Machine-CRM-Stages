@@ -1,24 +1,30 @@
-# Use the Website History skill in Claude, ChatGPT, or desktop AI
+# Website History Lite: start here
 
-[Download the Website History skill](../downloads/website-history-skill.zip) · [Read its instructions](../skills/website-history/SKILL.md)
+[Download Website History Lite](../downloads/website-history-lite-skill.zip) · [Read its instructions](../skills/website-history-lite/SKILL.md)
 
-The download includes the analysis engine, so you do not need a separate service just to run this with a capable desktop assistant. If your assistant supports importing skills, use the ZIP. Otherwise extract or attach it in a conversation and ask the assistant to follow `website-history/SKILL.md`. Attaching files does not itself install tools or connect a CRM.
+The download includes the analysis engine, so you don't need a separate service. If your assistant supports importing skills, import the ZIP. Otherwise extract or attach it in a conversation and ask the assistant to follow `website-history-lite/SKILL.md`.
 
-Choose one path:
+## How to use it
 
-| Path | What you learn | What you provide |
+Attach a CSV of companies (or paste a list of domains) and say:
+
+> run wayback on this csv
+
+| Path | What you get | What you need |
 |---|---|---|
-| **Customers** | The website stage as of each customer’s close date, plus patterns across customers | A CSV or CRM connection with domains and actual close dates |
-| **Leads** | Each company’s current website stage and supporting evidence | A CSV or CRM connection with company domains |
+| **Leads** | Each company's current website stage and the evidence behind it | Company names and domains |
+| **Customers** | The website stage as of each customer's close date | Domains plus actual close dates |
 
-Use this prompt:
+## What you get back
 
-> Use the Website History skill to analyze my [customers / leads]. My data is [in the attached CSV / in my connected CRM]. Ask me what you need to identify the right records and fields, then produce a report. Before uploading anything or changing CRM data, confirm the destination, matching rules, fields and options, and note handling with me. Show the exact proposed changes and wait for my approval.
+- A branded HTML report: stage mix, search, filters, and an expandable card for each company. It works offline in any browser.
+- A CSV ready to import into your CRM: Company Name, Domain, Website Stage, Website Stage Refreshed.
+- On the first run, steps for adding those two fields to your CRM's company records.
 
-Your assistant can inspect headers or CRM field definitions to make those questions concrete. For Customers, it will also clarify which actual close date to use and how to handle multiple deals for one company. For Leads, it will clarify the list or filter and the analysis date.
+Lite never connects to your CRM. You import the CSV yourself, matched on domain. The full **Website History** skill on [Agensi](https://www.agensi.io) also reads your list straight from a connected CRM, writes the stages back after you approve a preview, keeps every run in a hub, and schedules re-checks.
 
-**You get a report first:** a polished, gtmgrace.com-branded HTML file with stage breakdowns, searchable results, expandable evidence, and CSV export. Open it in your browser; it works offline. The CSV is also attached separately. In-chat export controls show a copyable request when downloads or printing are restricted. CRM writeback is optional. The skill prefers multi-select stage fields where supported, keeps historical customer results separate from current stages, and skips unresolved records. It never treats a CSV or connection as permission to upload data.
+## Requirements
 
-The assistant needs file access, Node.js 22+, and internet access to run the bundled engine. A CRM connector alone is not enough. If those capabilities are unavailable, it can prepare the input and explain what remains unrun, but it must not claim to have analyzed the websites.
+File access, Node.js 22+, and internet access to reach the public Internet Archive. If those aren't available, the assistant says so and doesn't claim to have analyzed anything.
 
-For technical customization of the starter, see [the editing guide](editing-guide.md).
+For technical customization, see [the editing guide](editing-guide.md).

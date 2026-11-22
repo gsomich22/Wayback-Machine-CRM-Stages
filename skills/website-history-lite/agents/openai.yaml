@@ -1,0 +1,4 @@
+interface:
+  display_name: "Website History Lite"
+  short_description: "Free: website stages for any company list, with a branded report and a CRM import CSV"
+  default_prompt: "Use $website-history-lite to run wayback on my CSV, then give me the branded report and the CRM import CSV."

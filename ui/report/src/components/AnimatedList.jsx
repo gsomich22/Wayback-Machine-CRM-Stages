@@ -1,7 +1,7 @@
 // Adapted from React Bits AnimatedList (JS + CSS), installed with shadcn.
 // Changes: semantic list, native disclosure controls, no global keyboard capture,
 // reduced motion, gentler one-time entrance, stable record keys, full-page scrolling.
-// See skills/website-history/assets/report/REACT-BITS-LICENSE.txt.
+// See skills/website-history-lite/assets/report/REACT-BITS-LICENSE.txt.
 import {useRef} from 'react';
 import {motion, useInView, useReducedMotion} from 'motion/react';
 import './AnimatedList.css';

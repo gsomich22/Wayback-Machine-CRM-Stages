@@ -1,7 +1,7 @@
 import React, {useState, useMemo} from 'react';
 import {createRoot} from 'react-dom/client';
 import AnimatedList from './components/AnimatedList.jsx';
-import {summarize, STAGES, COLORS} from '../../../skills/website-history/scripts/report-data.mjs';
+import {summarize, STAGES, COLORS} from '../../../skills/website-history-lite/scripts/report-data.mjs';
 import './fonts.css';
 import './report.css';
 const report = JSON.parse(document.getElementById('report-data').textContent);

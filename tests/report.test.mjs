@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
-const source = new URL('../skills/website-history/scripts/',import.meta.url);
+const source = new URL('../skills/website-history-lite/scripts/',import.meta.url);
 const scripts = existsSync(source) ? source : new URL('../../',import.meta.url);
 const {normalizeReport,summarize,toCsv,toImportCsv} = await import(new URL('report-data.mjs',scripts));
 const {renderReport} = await import(new URL('render-report.mjs',scripts));

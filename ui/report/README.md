@@ -5,8 +5,8 @@ Editable source for the skill's offline HTML report. Normal skill users run the 
 ```sh
 npm ci --prefix ui/report
 npm run build --prefix ui/report
-node skills/website-history/scripts/render-report.mjs examples/report-leads.json examples/report-leads.html
-node skills/website-history/scripts/render-report.mjs examples/report-customers.json examples/report-customers.html
+node skills/website-history-lite/scripts/render-report.mjs examples/report-leads.json examples/report-leads.html
+node skills/website-history-lite/scripts/render-report.mjs examples/report-customers.json examples/report-customers.html
 python3 scripts/export-skill.py
 ```
 
@@ -22,6 +22,6 @@ The requested `@react-bits/Components-JS-CSS` identifier failed registry lookup.
 
 The palette follows the supplied brand reference: cream `#f5f0e7`, navy `#132440`, violet `#7045ff`, and sage `#5f7e6c`. Serif headlines and system sans-serif labels need no external font download. The illustrated cover cards are decorative, not data; stage-mix proportions and counts use actual report rows.
 
-Third-party notices live in `skills/website-history/assets/report/`. React Bits' license applies to its adapted list; the repository MIT license does not replace it. Rebuild the assets and regenerate both examples whenever UI source changes.
+Third-party notices live in `skills/website-history-lite/assets/report/`. React Bits' license applies to its adapted list; the repository MIT license does not replace it. Rebuild the assets and regenerate both examples whenever UI source changes.
 
 Embedded previews use an export-help panel with a selectable request and optional clipboard copy. They never try to write into the parent conversation. Standalone files retain CSV download and printing, with the same help available if the action is blocked. The Node renderer writes a sibling CSV for direct attachment.

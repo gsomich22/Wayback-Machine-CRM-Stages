@@ -6,14 +6,14 @@ Give it a domain. Get a website-activity stage, dated evidence, and a readable s
 
 Every run gives you a branded HTML report and a CRM import CSV (company name, domain, website stage, date refreshed). Add two fields to your CRM's company records once, **Website Stage** and **Website Stage Refreshed**, then import the CSV matched on domain.
 
-If your CRM is connected to your AI assistant, the skill can also pull the company list from it and, after you approve a preview, write the two fields back. Automatic stamping of new leads (webhooks), archived before/after images, and done-for-you field setup are part of the **CRM kits** on [Agensi](https://www.agensi.io). The docs below explain how the field mapping works if you'd rather build your own writer.
+This repo is **Website History Lite**, the free version. The full **Website History** skill on [Agensi](https://www.agensi.io) also reads your company list straight from a connected CRM, writes the stages back after you approve a preview, keeps every run in one hub, and schedules re-checks. The docs below explain how the field mapping works if you'd rather build your own writer.
 
 ## What you get
 
 | Path | Result | Start here |
 |---|---|---|
-| Claude / ChatGPT / desktop AI | **Website History skill**: customer or lead research, a branded HTML report, and a CRM import CSV | [Download skill](downloads/website-history-skill.zip) · [How to use it](agent/START-HERE.md) |
-| Any CRM | Two fields plus a CSV import matched on domain | [Field setup](skills/website-history/references/crm-field-setup.md) |
+| Claude / ChatGPT / desktop AI | **Website History Lite**: customer or lead research, a branded HTML report, and a CRM import CSV | [Download skill](downloads/website-history-lite-skill.zip) · [How to use it](agent/START-HERE.md) |
+| Any CRM | Two fields plus a CSV import matched on domain | [Field setup](skills/website-history-lite/references/crm-field-setup.md) |
 | Clay / HTTP / n8n | A portable field value you can map anywhere | [Portable field setup](docs/generic.md) |
 | Build your own writer | How the Attio and Apollo field mapping works | [Attio](docs/attio.md) · [Apollo](docs/apollo.md) |
 | Local preview | Sample JSON, CSV, and the Attio note, with no account connection | [Quickstart](QUICKSTART.md) |
@@ -22,7 +22,7 @@ The starter’s original source code is free and MIT-licensed. The optional repo
 
 ## Claude / ChatGPT: use the Website History skill
 
-**[Download the skill ZIP](downloads/website-history-skill.zip)**
+**[Download the skill ZIP](downloads/website-history-lite-skill.zip)**
 
 Give the skill to your assistant, then choose what to research:
 
@@ -31,7 +31,7 @@ Give the skill to your assistant, then choose what to research:
 | **Customers** | Finds the website stage at each customer’s actual close date | A CSV or connected CRM with company domains and actual close dates |
 | **Leads** | Finds each company’s current website stage | A CSV or connected CRM with company domains |
 
-1. Import the ZIP if your assistant supports skills. Otherwise, attach or extract it and ask the assistant to follow `website-history/SKILL.md`.
+1. Import the ZIP if your assistant supports skills. Otherwise, attach or extract it and ask the assistant to follow `website-history-lite/SKILL.md`.
 2. Attach your CSV in the same conversation, or tell the assistant which connected CRM and list to use.
 3. Ask it to run the skill. It will clarify the relevant records and fields, then return your results.
 
@@ -126,9 +126,9 @@ Wayback Machine metadata can show patterns worth investigating. It cannot establ
 - `src/note.mjs`: note formatting; `src/fields.mjs`: portable field values and CSV; `src/output.mjs`: portable signal object.
 - `config/`: stage timing and the portable JSON schema.
 - `workflows/n8n/generic-stage-field.json`: portable-output workflow.
-- `skills/website-history/`: the Customers/Leads skill, offline HTML renderer, and CRM field setup guide.
+- `skills/website-history-lite/`: the Customers/Leads skill, offline HTML renderer, and CRM field setup guide.
 - `ui/report/` (repository checkout): editable React report source; run `npm ci --prefix ui/report` and `npm run build --prefix ui/report` to rebuild bundled assets.
-- `downloads/website-history-skill.zip`: self-contained skill export; rebuild with `python3 scripts/export-skill.py`.
+- `downloads/website-history-lite-skill.zip`: self-contained skill export; rebuild with `python3 scripts/export-skill.py`.
 - `agent/`: the two-path starting guide and technical adaptation context.
 - `tests/`: analysis, API contracts, note formatting, and the report.
 

@@ -2,7 +2,7 @@
 
 Start with companies whose outcomes you know. Ask what evidence was available before they became customers, then compare that with the website stages of new accounts.
 
-Use the **Customers** path in the [downloadable skill](../downloads/website-history-skill.zip). Attach your customer CSV directly to the AI conversation or select your connected CRM. The assistant checks the domains, actual close-date field, cohort filters, and handling of multiple deals, then runs the included engine once per domain/date and produces a combined report. See [the two-path guide](../agent/START-HERE.md).
+Use the **Customers** path in the [downloadable skill](../downloads/website-history-lite-skill.zip). Attach your customer CSV directly to the AI conversation. The assistant checks the domains, actual close-date field, cohort filters, and handling of multiple deals, then runs the included engine once per domain/date and produces a combined report. See [the two-path guide](../agent/START-HERE.md).
 
 Each analysis uses the actual close date as its cutoff. A rebuild requires confirmation captures; if confirmation only appears after close, it cannot be counted as confirmed at close. Incomplete archive reads stay unresolved. This is an assistant-guided batch workflow, not a separate CSV-upload application.
 

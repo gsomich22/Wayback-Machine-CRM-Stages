@@ -5,12 +5,16 @@ import zipfile
 import re
 import posixpath
 
+import sys
 ROOT = Path(__file__).resolve().parents[1]
-SKILL = ROOT / "skills" / "website-history"
-DEST = ROOT / "downloads" / "website-history-skill.zip"
+# Usage: export-skill.py [skill-folder] [zip-path]
+# Default: the public Lite skill. The paid skill folder lives outside this repo.
+SKILL = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "skills" / "website-history-lite"
+NAME = SKILL.name
+DEST = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else ROOT / "downloads" / f"{NAME}-skill.zip"
 
 def export():
-    files = [(p, Path("website-history") / p.relative_to(SKILL))
+    files = [(p, Path(NAME) / p.relative_to(SKILL))
              for p in sorted(SKILL.rglob("*")) if p.is_file()]
     engine = []
     # Free skill: analysis, report and CSV export only. CRM writers, n8n workflows
@@ -24,10 +28,10 @@ def export():
                             ("examples", "*"), ("docs", "*.md"), ("tests", "*.mjs")]:
         engine.extend(p for p in (ROOT / folder).glob(pattern) if p.is_file() and p.name not in kit_only)
     engine += [ROOT / name for name in ["LICENSE", "package.json"]]
-    files += [(p, Path("website-history/scripts/engine") / p.relative_to(ROOT)) for p in engine]
+    files += [(p, Path(NAME) / "scripts/engine" / p.relative_to(ROOT)) for p in engine]
     targets = {source.resolve(): target for source, target in files}
     # A bundled guide links to the installed instructions instead of a recursive download.
-    targets[DEST.resolve()] = Path("website-history/SKILL.md")
+    targets[DEST.resolve()] = Path(NAME) / "SKILL.md"
     DEST.parent.mkdir(exist_ok=True)
     with zipfile.ZipFile(DEST, "w", zipfile.ZIP_DEFLATED) as z:
         for source, target in sorted(files, key=lambda pair: str(pair[1])):

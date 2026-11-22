@@ -46,7 +46,7 @@ Create one custom multi-select field named **Website activity state** wherever t
 
 ## 5. I want my AI assistant to analyze customers or leads
 
-[Download the skill](downloads/website-history-skill.zip), then follow [the short two-path guide](agent/START-HERE.md). Customers uses actual close dates; Leads uses the current analysis date. Both accept a CSV attached to the conversation or a connected CRM. The assistant produces a report and asks about CRM details before proposing an upload or update. It waits for approval of that preview before writing anything.
+[Download the skill](downloads/website-history-lite-skill.zip), then follow [the short two-path guide](agent/START-HERE.md). Customers uses actual close dates; Leads uses the current analysis date. Attach a CSV or paste a list of domains. You get a branded report and a CSV to import into your CRM. (The full Website History skill on Agensi also reads your list from a connected CRM and writes the stages back.)
 
 The AI path also produces a gtmgrace.com-branded HTML report. Open the file in a browser for stage filters, company evidence, and CSV export; it works offline. The [Leads example](examples/report-leads.html) and [Customers example](examples/report-customers.html) use synthetic data.
 
